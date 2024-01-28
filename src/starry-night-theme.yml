@@ -3,9 +3,9 @@ name: Starry Night Theme
 author: BuffDev
 maintainers:
   - Danil0ws <mydanilows@gmail.com>
-semanticClass: theme.starry-night
+semanticClass: theme.starry-night-theme
 semanticHighlighting: true
-starry-night:
+starry-night-theme:
   base:
     - &BG        '#011627'  # Azul escuro do céu
     - &FG        '#FDFFFC'  # Branco para o texto
