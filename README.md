@@ -12,7 +12,7 @@ As the moonlight caresses the landscape, subtle yellow highlights (#FFC857) shim
 
 "Moonlit Reverie" invites you to explore the intersection of art and emotion, a fusion of Van Gogh's timeless vision and a contemporary interpretation that echoes the cosmic beauty of "Starry Night." Immerse yourself in this celestial symphony, where each color tells a story, and the night sky becomes a canvas for the soul's deepest contemplations.
 
-![Screenshot](https://raw.githubusercontent.com/buffDev/starry-night-theme/main/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/buffDev/starry-night-theme/master/screenshot.png)
 
 ## Install
 
