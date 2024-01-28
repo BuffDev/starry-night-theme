@@ -4,7 +4,7 @@
     "displayName": "Starry Night Theme",
     "homepage": "https://github.com/buffDev/starry-night-theme",
     "description": "Dark theme inspired by Van Gogh's Starry Night for VS Code",
-    "publisher": "buffDev",
+    "publisher": "Danil0ws",
     "license": "MIT",
     "scripts": {
         "build": "node ./scripts/build.js",
