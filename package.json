@@ -1,6 +1,6 @@
 {
     "name": "starry-night-theme",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "displayName": "Starry Night Theme",
     "homepage": "https://github.com/buffDev/starry-night-theme",
     "description": "Dark theme inspired by Van Gogh's Starry Night for VS Code",
@@ -11,8 +11,7 @@
         "lint": "node ./scripts/lint.js",
         "package": "vsce package -o ./bin/starry-night-theme.vsix",
         "vscode:prepublish": "npm run build",
-        "vsce-publish": "vsce publish",
-        "vsce-login": "vsce login"
+        "vsce-publish": "vsce publish"
     },
     "maintainers": [
         "Danil0ws <mydanilows@gmail.com>"
