@@ -1,0 +1,16 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "[yaml]": {
+        "editor.renderWhitespace": "boundary",
+        "editor.formatOnSave": false
+    },
+    "terminal.integrated.inheritEnv": true,
+    "terminal.integrated.shell.osx": "/bin/bash",
+    "spellright.language": [
+        "pt"
+    ],
+    "spellright.documentTypes": [
+        "latex",
+        "plaintext"
+    ]
+}
