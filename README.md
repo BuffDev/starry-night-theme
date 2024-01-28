@@ -1,4 +1,4 @@
-# Starry Night for [Visual Studio Code](http://code.visualstudio.com)
+# Starry Night Theme for [Visual Studio Code](http://code.visualstudio.com)
 
 > A dark theme inspired by Van Gogh's Starry Night for [Visual Studio Code](http://code.visualstudio.com).
 

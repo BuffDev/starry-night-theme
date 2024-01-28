@@ -43,7 +43,7 @@
     "contributes": {
         "themes": [
             {
-                "label": "Starry Night",
+                "label": "Starry Night Theme",
                 "uiTheme": "vs-dark",
                 "path": "./theme/starry-night-theme.json"
             }
