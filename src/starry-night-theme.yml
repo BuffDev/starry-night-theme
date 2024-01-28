@@ -5,60 +5,61 @@ maintainers:
   - Danil0ws <mydanilows@gmail.com>
 semanticClass: theme.starry-night
 semanticHighlighting: true
-starry-night:
+starry-night-theme:
   base:
-    - &BG        '#011627'  # Azul escuro do céu
-    - &FG        '#FDFFFC'  # Branco para o texto
-    - &SELECTION '#404066'  # Azul esverdeado para a seleção
-    - &COMMENT   '#8D99AE'  # Cinza azulado para comentários
-    - &CYAN      '#3FA7D6'  # Azul claro esverdeado
-    - &GREEN     '#4CAF50'  # Verde
-    - &ORANGE    '#FFB86C'  # Laranja
-    - &PINK      '#FF85A1'  # Rosa
-    - &PURPLE    '#8369C4'  # Roxo
-    - &RED       '#D90429'  # Vermelho
-    - &YELLOW    '#FFEA5E'  # Amarelo pálido
-    - &BACKGROUND '#1A1A1D' # Cor de fundo
-    - &CURRENT_LINE '#0E0E10' # Cor da linha atual
-    - &GUTTER     '#262629'  # Cor da barra lateral (gutter)
-    - &LINE_NUMBERS '#808080' # Cor dos números de linha
-    - &INVISIBLES '#777777'  # Cor dos caracteres invisíveis
-    - &GUIDES     '#333333'  # Cor das guias de indentação
-    - &PARENTHESES '#A6A6A6' # Cor dos parênteses
-    - &BAD_CHARACTERS '#D90429' # Cor de caracteres inválidos
+    - &BG             '#011627'  # Dark Blue
+    - &FG             '#F6F6F6'  # Light Gray
+    - &SELECTION      '#0A6A8E'  # Dark Cyan
+    - &COMMENT        '#5C6773'  # Blue-Gray
+    - &CYAN           '#56B6C2'  # Cyan
+    - &GREEN          '#91B859'  # Green
+    - &ORANGE         '#D18F4E'  # Orange
+    - &PINK           '#FF66B2'  # Pink
+    - &PURPLE         '#A881D5'  # Purple
+    - &RED            '#EF5350'  # Red
+    - &YELLOW         '#FFC857'  # Yellow
+    - &BACKGROUND     '#011627'  # Dark Blue
+    - &CURRENT_LINE   '#002137'  # Darker Blue
+    - &GUTTER         '#002C44'  # Deep Blue
+    - &LINE_NUMBERS   '#002137'  # Darker Blue
+    - &INVISIBLES     '#394249'  # Dark Blue-Gray
+    - &GUIDES         '#002137'  # Darker Blue
+    - &PARENTHESES    '#A881D5'  # Purple
+    - &BAD_CHARACTERS '#EF5350'  # Red
 
   ansi:
-    - &COLOR0        '#21222C'
-    - &COLOR1        '#FF5555'
-    - &COLOR2        '#4CAF50'
-    - &COLOR3        '#F1FA8C'
-    - &COLOR4        '#8369C4'
-    - &COLOR5        '#FF85A1'
-    - &COLOR6        '#3FA7D6'
-    - &COLOR7        '#FDFFFC'
-    - &COLOR8        '#6272A4'
-    - &COLOR9        '#FF6E6E'
-    - &COLOR10       '#69FF94'
-    - &COLOR11       '#FFFFA5'
-    - &COLOR12       '#D6ACFF'
-    - &COLOR13       '#FF92DF'
-    - &COLOR14       '#A4FFFF'
-    - &COLOR15       '#FFFFFF'
+    - &COLOR0        '#011627'  # Dark Blue
+    - &COLOR1        '#EF5350'  # Red
+    - &COLOR2        '#91B859'  # Green
+    - &COLOR3        '#D18F4E'  # Orange
+    - &COLOR4        '#A881D5'  # Purple
+    - &COLOR5        '#FFC857'  # Yellow
+    - &COLOR6        '#56B6C2'  # Cyan
+    - &COLOR7        '#5C6773'  # Blue-Gray
+    - &COLOR8        '#002C44'  # Deep Blue
+    - &COLOR9        '#EF5350'  # Red
+    - &COLOR10       '#91B859'  # Green
+    - &COLOR11       '#D18F4E'  # Orange
+    - &COLOR12       '#A881D5'  # Purple
+    - &COLOR13       '#FFC857'  # Yellow
+    - &COLOR14       '#56B6C2'  # Cyan
+    - &COLOR15       '#F6F6F6'  # Light Gray
 
   brightOther:
-    - &TEMP_QUOTES          '#E9F284'
-    - &TEMP_PROPERTY_QUOTES '#8BE9FE'
+    - &TEMP_QUOTES          '#D18F4E'  # Orange
+    - &TEMP_PROPERTY_QUOTES '#FFC857'  # Yellow
 
   other:
-    - &LineHighlight '#44475A75'
-    - &NonText       '#FFFFFF1A'
-    - &WHITE         '#FFFFFF'
-    - &TAB_DROP_BG   '#44475A70'
+    - &LineHighlight '#002137'  # Darker Blue
+    - &NonText       '#394249'  # Dark Blue-Gray
+    - &WHITE         '#F6F6F6'  # Light Gray
+    - &TAB_DROP_BG   '#002C44'  # Deep Blue
     # UI Variants
-    - &BGLighter     '#424450'
-    - &BGLight       '#343746' # HSV (230   , 25.71, 27.45)
-    - &BGDark        '#21222C' # HSV (234.55, 25   , 17.25)
-    - &BGDarker      '#191A21' # HSV (234.55, 25   , 13   )
+    - &BGLighter     '#002C44'  # Deep Blue
+    - &BGLight       '#002137'  # Darker Blue
+    - &BGDark        '#011627'  # Dark Blue
+    - &BGDarker      '#000A14'  # Darkest Blue
+
 
 # User Interface (more info: https://code.visualstudio.com/docs/getstarted/theme-color-reference)
 colors:
