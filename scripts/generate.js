@@ -31,7 +31,7 @@ const schema = Schema.create([withAlphaType]);
 
 module.exports = async () => {
     const yamlFile = await readFile(
-        join(__dirname, '..', 'src', 'starry-night.yml'),
+        join(__dirname, '..', 'src', 'starry-night-theme.yml'),
         'utf-8'
     );
 
