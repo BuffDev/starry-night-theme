@@ -2,7 +2,7 @@
 
 > A dark theme for [Visual Studio Code](http://code.visualstudio.com).
 
-![Screenshot](https://raw.githubusercontent.com/buffDev/starry-night-theme/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/buffDev/starry-night-theme/main/screenshot.png)
 
 ## Install
 
