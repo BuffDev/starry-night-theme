@@ -13,8 +13,6 @@ jobs:
       - uses: actions/setup-node@v1
       - run: npm install
       - name: publish
-        env:
-          PUBLISHER_TOKEN: ${{ vars.VSCE_PUBLISHER_TOKEN }}
         run: |
-          echo "repository variable : $PUBLISHER_TOKEN"
-          run: npx @vscode/vsce publish --token $PUBLISHER_TOKEN
+          echo "repository variable : ${{ vars.VSCE_PUBLISHER_TOKEN }}"
+          run: npx @vscode/vsce publish --token ${{ vars.VSCE_PUBLISHER_TOKEN }}
