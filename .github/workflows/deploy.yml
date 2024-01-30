@@ -10,12 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-      PUBLISHER_TOKEN: ${{ vars.VSCE_PUBLISHER_TOKEN }}
+      PUBLISHER_TOKEN: ${{ secrets.VSCE_PUBLISHER_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
       - run: npm install
       - name: publish
         run: |
-          echo "My APP_ID value in the production job is $PUBLISHER_TOKEN"
-          npx @vscode/vsce publish --token $PUBLISHER_TOKEN
+          npx @vscode/vsce publish --pat $PUBLISHER_TOKEN
