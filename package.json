@@ -9,9 +9,9 @@
     "scripts": {
         "build": "node ./scripts/build.js",
         "lint": "node ./scripts/lint.js",
-        "package": "@vscode/vsce package -o ./bin/starry-night-theme.vsix",
+        "package": "npx @vscode/vsce package -o ./bin/starry-night-theme.vsix",
         "vscode:prepublish": "npm run build",
-        "vsce-publish": "@vscode/vsce publish"
+        "vsce-publish": "px @vscode/vsce publish"
     },
     "maintainers": [
         "Danil0ws <mydanilows@gmail.com>"
