@@ -1,6 +1,6 @@
 {
     "name": "starry-night-theme",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "displayName": "Starry Night Theme",
     "homepage": "https://github.com/buffDev/starry-night-theme",
     "description": "Dark theme inspired by Van Gogh's Starry Night for VS Code",
@@ -55,6 +55,6 @@
         "js-yaml": "^3.13.1",
         "prettier": "^1.19.1",
         "tinycolor2": "^1.4.1",
-        "vsce": "^2.15.0"
+        "@vscode/vsce": "^2.23.0"
     }
 }
