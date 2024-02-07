@@ -11,13 +11,14 @@ starry-night-theme:
     - &FG             '#F6F6F6'
     - &SELECTION      '#0A6A8E'
     - &COMMENT        '#024d75'
-    - &CYAN           '#3ac5c9'
+    - &CYAN           '#00ffff'
+    - &GREY           '#1f2937'
     - &BLUE           '#24a9d1'
-    - &GREEN          '#8dbd4a'
+    - &GREEN          '#83dd59'
     - &ORANGE         '#d19b3d'
-    - &PINK           '#ed55a1'
-    - &PURPLE         '#874fc9'
-    - &RED            '#ed5e5a'
+    - &PINK           '#ff00ff'
+    - &PURPLE         '#6001d2'
+    - &RED            '#ff6f60'
     - &YELLOW         '#ebe65b'
     - &BACKGROUND     '#011627'
     - &CURRENT_LINE   '#002137'
@@ -25,25 +26,25 @@ starry-night-theme:
     - &LINE_NUMBERS   '#002137'
     - &INVISIBLES     '#073e5c'
     - &GUIDES         '#002137'
-    - &PARENTHESES    '#874fc9'
-    - &BAD_CHARACTERS '#ed5e5a'
+    - &PARENTHESES    '#6001d2'
+    - &BAD_CHARACTERS '#ff6f60'
 
   ansi:
     - &COLOR0        '#011627'
-    - &COLOR1        '#ed5e5a'
-    - &COLOR2        '#8dbd4a'
+    - &COLOR1        '#ff6f60'
+    - &COLOR2        '#83dd59'
     - &COLOR3        '#d19b3d'
-    - &COLOR4        '#874fc9'
+    - &COLOR4        '#6001d2'
     - &COLOR5        '#ebe65b'
-    - &COLOR6        '#3ac5c9'
+    - &COLOR6        '#24a9d1'
     - &COLOR7        '#024d75'
     - &COLOR8        '#024d75'
-    - &COLOR9        '#ed5e5a'
-    - &COLOR10       '#8dbd4a'
+    - &COLOR9        '#ff6f60'
+    - &COLOR10       '#83dd59'
     - &COLOR11       '#d19b3d'
-    - &COLOR12       '#874fc9'
+    - &COLOR12       '#6001d2'
     - &COLOR13       '#ebe65b'
-    - &COLOR14       '#3ac5c9'
+    - &COLOR14       '#24a9d1'
     - &COLOR15       '#F6F6F6'
     - &COLOR16       '#24a9d1'
 
@@ -184,11 +185,11 @@ colors:
   tab.activeBackground: *BG                                                     # Active Tab background color
   tab.activeForeground: *FG                                                     # Active Tab foreground color in an active group
   tab.border: *BGDarker                                                         # Border to separate Tabs from each other
-  tab.activeBorderTop: !alpha [*PINK, 80]                                       # A border drawn to the top of the active tab
+  tab.activeBorderTop: !alpha [*BGLight, 80]                                       # A border drawn to the top of the active tab
   tab.activeBorder:                                                             # A border drawn to the bottom of the active tab
   tab.unfocusedActiveBorder:                                                    # A border drawn to the bottom of the active tab in an editor group that is not focused
   tab.inactiveBackground: *BGDark                                               # Inactive Tab background color
-  tab.inactiveForeground: *COMMENT                                              # Inactive Tab foreground color in an active group
+  tab.inactiveForeground: *FG                                              # Inactive Tab foreground color in an active group
   tab.unfocusedActiveForeground:                                                # Active tab foreground color in an inactive editor group
   tab.unfocusedInactiveForeground:                                              # Inactive tab foreground color in an inactive editor group
 
@@ -993,6 +994,9 @@ tokenColors:
     # See (https://github.com/Microsoft/vscode/issues/4795)
     - punctuation.definition.string.begin
     - punctuation.definition.string.end
+    - string.template punctuation.definition.string
+    - string.template punctuation.definition.string.end
+    - string.template punctuation.definition.string.begin
     settings:
       foreground: *TEMP_QUOTES
 
