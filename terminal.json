@@ -1,0 +1,27 @@
+{
+    "schemes": [
+        {
+            "name": "Starry Night",
+            "cursorColor": "#F6F6F6",
+            "selectionBackground": "#5A839D",
+            "background": "#011627",
+            "foreground": "#002137",
+            "black": "#1f2937",
+            "blue": "#6001d2",
+            "cyan": "#87D8F6",
+            "green": "#83dd59",
+            "purple": "#ff00ff",
+            "red": "#ff6f60",
+            "white": "#F6F6F6",
+            "yellow": "#F7DD3E",
+            "brightBlack": "#1f293F",
+            "brightBlue": "#6001FF",
+            "brightCyan": "#87D8FF",
+            "brightGreen": "#83dd5F",
+            "brightPurple": "#ff0FF5",
+            "brightRed": "#ff6f6F",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#F7DD3F"
+        }
+    ]
+}
