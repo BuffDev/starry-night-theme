@@ -89,6 +89,7 @@ jobs:
           if [ -n "$EXISTS" ]; then
             echo "Version $VERSION already on Open VSX, skipping."
           else
+            npx ovsx create-namespace "$PUBLISHER" -p "$OVSX_TOKEN" || true
             npx ovsx publish ./bin/starry-night-theme.vsix -p "$OVSX_TOKEN"
           fi
       - name: Open VSX publish skipped
