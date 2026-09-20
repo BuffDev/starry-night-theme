@@ -47,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: bin
@@ -71,14 +72,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: production
+    env:
+      OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: bin
           path: bin
       - name: Publish (skip if version exists)
-        env:
-          OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
+        if: env.OVSX_TOKEN != ''
         run: |
           set -e
           VERSION="${GITHUB_REF_NAME#v}"
@@ -88,6 +91,9 @@ jobs:
           else
             npx ovsx publish ./bin/starry-night-theme.vsix -p "$OVSX_TOKEN"
           fi
+      - name: Open VSX publish skipped
+        if: env.OVSX_TOKEN == ''
+        run: echo "OVSX_TOKEN not set; skipping Open VSX."
 
   jetbrains:
     needs: build
