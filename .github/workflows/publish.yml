@@ -109,12 +109,16 @@ jobs:
           path: bin
       - name: Upload to JetBrains Marketplace
         if: env.JETBRAINS_TOKEN != ''
+        env:
+          JETBRAINS_PLUGIN_ID: ${{ secrets.JETBRAINS_PLUGIN_ID }}
         run: |
-          curl -sS -X POST 'https://plugins.jetbrains.com/plugin/uploadPlugin' \
-            -H "Authorization: Bearer $JETBRAINS_TOKEN" \
-            -F 'file=@bin/starry-night-theme-jetbrains.zip' \
-            -F 'pluginId=com.buffdev.starry-night-theme' \
-            -F 'channel=stable'
+          # pluginId is the NUMERIC Marketplace plugin id, not the XML id; it only
+          # exists after the first upload. First upload creates the plugin and
+          # returns its id — set it as JETBRAINS_PLUGIN_ID for future releases,
+          # otherwise each release creates a new plugin entry.
+          ARGS=(-H "Authorization: Bearer $JETBRAINS_TOKEN" -F 'file=@bin/starry-night-theme-jetbrains.zip' -F 'channel=stable')
+          if [ -n "$JETBRAINS_PLUGIN_ID" ]; then ARGS+=(-F "pluginId=$JETBRAINS_PLUGIN_ID"); fi
+          curl -f -sS -X POST 'https://plugins.jetbrains.com/plugin/uploadPlugin' "${ARGS[@]}"
       - name: JetBrains upload skipped
         if: env.JETBRAINS_TOKEN == ''
         run: echo "JETBRAINS_TOKEN not set; skipping JetBrains Marketplace."
