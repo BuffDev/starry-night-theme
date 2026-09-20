@@ -112,18 +112,20 @@ jobs:
         env:
           JETBRAINS_PLUGIN_ID: ${{ secrets.JETBRAINS_PLUGIN_ID }}
         run: |
-          # API (docs: plugin-upload): pluginId = numeric Marketplace id, or
-          # xmlId = the <id> from plugin.xml (either is required). Set
-          # JETBRAINS_PLUGIN_ID to the numeric id after the plugin is created,
-          # otherwise the xmlId is used (and the plugin entry is created on
-          # first upload).
-          ARGS=(-H "Authorization: Bearer $JETBRAINS_TOKEN" -F 'file=@bin/starry-night-theme-jetbrains.zip' -F 'channel=stable')
+          # uploadPlugin only updates EXISTING plugins; first-time creation is
+          # web-only (plugins.jetbrains.com dashboard). Create the plugin once
+          # there, copy the numeric id from its URL, and set it as the
+          # JETBRAINS_PLUGIN_ID secret. Until then this step passes with a
+          # notice instead of failing the release.
           if [ -n "$JETBRAINS_PLUGIN_ID" ]; then
-            ARGS+=(-F "pluginId=$JETBRAINS_PLUGIN_ID")
+            curl --fail-with-body -sS -X POST 'https://plugins.jetbrains.com/plugin/uploadPlugin' \
+              -H "Authorization: Bearer $JETBRAINS_TOKEN" \
+              -F "pluginId=$JETBRAINS_PLUGIN_ID" \
+              -F 'file=@bin/starry-night-theme-jetbrains.zip' \
+              -F 'channel=stable'
           else
-            ARGS+=(-F 'xmlId=com.buffdev.starry-night-theme')
+            echo "JETBRAINS_PLUGIN_ID not set — upload bin/starry-night-theme-jetbrains.zip once via plugins.jetbrains.com and set the numeric plugin id as a repo secret to enable automatic uploads."
           fi
-          curl --fail-with-body -sS -X POST 'https://plugins.jetbrains.com/plugin/uploadPlugin' "${ARGS[@]}"
       - name: JetBrains upload skipped
         if: env.JETBRAINS_TOKEN == ''
         run: echo "JETBRAINS_TOKEN not set; skipping JetBrains Marketplace."
