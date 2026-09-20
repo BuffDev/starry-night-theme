@@ -4,8 +4,8 @@
  *
  *   bin/jetbrains/starry-night-theme.icls   - editor color scheme (standalone-installable)
  *   bin/jetbrains/starry-night.theme.json   - UI theme (new JSON format, 2020.1+)
- *   bin/jetbrains/META-INF/plugin.xml       - plugin descriptor for Marketplace upload
- *   bin/starry-night-theme-jetbrains.zip    - installable plugin package
+ *   bin/jetbrains/lib/starry-night-theme.jar - plugin distribution jar (META-INF/plugin.xml + resources)
+ *   bin/starry-night-theme-jetbrains.zip    - installable plugin package (zip root = plugin root, only lib/)
  *
  * Dev note: this is a working approximation of the JetBrains theme grammar, not
  * a 1:1 mapping of every VS Code key. Unknown attribute/scheme color names are
@@ -219,17 +219,36 @@ async function main() {
     const { base } = await generate();
     const colors = base.colors;
 
-    fs.mkdirSync(path.join(OUT, 'META-INF'), { recursive: true });
-    fs.writeFileSync(path.join(OUT, 'starry-night-theme.icls'), buildIcls(colors, base.tokenColors));
-    fs.writeFileSync(path.join(OUT, 'starry-night.theme.json'), buildThemeJson(colors));
-    fs.writeFileSync(path.join(OUT, 'META-INF', 'plugin.xml'), buildPluginXml());
+    const icls = buildIcls(colors, base.tokenColors);
+    const themeJson = buildThemeJson(colors);
+    const pluginXml = buildPluginXml();
+
+    // Standalone artifacts (manual install into <IDE>/colors, see INSTALL.md).
+    fs.writeFileSync(path.join(OUT, 'starry-night-theme.icls'), icls);
+    fs.writeFileSync(path.join(OUT, 'starry-night.theme.json'), themeJson);
+
+    // JetBrains requires the plugin distribution as a jar in lib/; the plugin
+    // root (zip root) must not contain META-INF/icls/theme.json directly.
+    const jarPath = path.join(OUT, 'lib', 'starry-night-theme.jar');
+    fs.rmSync(path.join(OUT, 'lib'), { recursive: true, force: true });
+    fs.mkdirSync(path.join(OUT, 'lib'), { recursive: true });
+    const stage = fs.mkdtempSync(path.join(OUT, '.jar-stage-'));
+    try {
+        fs.mkdirSync(path.join(stage, 'META-INF'), { recursive: true });
+        fs.writeFileSync(path.join(stage, 'META-INF', 'plugin.xml'), pluginXml);
+        fs.writeFileSync(path.join(stage, 'starry-night-theme.icls'), icls);
+        fs.writeFileSync(path.join(stage, 'starry-night.theme.json'), themeJson);
+        execFileSync('zip', ['-qr', jarPath, '.'], { cwd: stage });
+    } finally {
+        fs.rmSync(stage, { recursive: true, force: true });
+    }
 
     const zipPath = path.join(ROOT, 'bin', 'starry-night-theme-jetbrains.zip');
     fs.rmSync(zipPath, { force: true });
-    execFileSync('zip', ['-qr', zipPath, '.'], { cwd: OUT });
+    execFileSync('zip', ['-qr', zipPath, 'lib'], { cwd: OUT });
 
     console.log(
-        `[jetbrains] wrote ${OUT}/starry-night-theme.icls, starry-night.theme.json, META-INF/plugin.xml -> ${zipPath}`
+        `[jetbrains] wrote ${jarPath} (META-INF/plugin.xml, icls, theme.json) + standalone files -> ${zipPath}`
     );
 }
 
