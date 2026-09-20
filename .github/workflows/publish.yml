@@ -65,7 +65,7 @@ jobs:
           if echo "$RESP" | jq -e --arg v "$VERSION" '[.results[0].extensions[0].versions[]?.version] | index($v)' >/dev/null; then
             echo "Version $VERSION already on VS Code Marketplace, skipping."
           else
-            npx @vscode/vsce publish --pat "$VSCE_PUBLISHER_TOKEN"
+            npx @vscode/vsce publish --packagePath ./bin/starry-night-theme.vsix --pat "$VSCE_PUBLISHER_TOKEN"
           fi
 
   open-vsx:
