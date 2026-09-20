@@ -1,6 +1,6 @@
 {
     "name": "starry-night-theme",
-    "version": "0.0.18",
+    "version": "1.0.0",
     "displayName": "Starry Night Theme",
     "homepage": "https://github.com/buffDev/starry-night-theme",
     "description": "Dark theme inspired by Van Gogh's Starry Night for VS Code",
@@ -8,10 +8,12 @@
     "license": "MIT",
     "scripts": {
         "build": "node ./scripts/build.js",
+        "build:intellij": "node ./scripts/jetbrains.js",
         "lint": "node ./scripts/lint.js",
         "package": "npx @vscode/vsce package -o ./bin/starry-night-theme.vsix",
+        "package:intellij": "npm run build:intellij",
         "vscode:prepublish": "npm run build",
-        "vsce-publish": "px @vscode/vsce publish"
+        "vsce-publish": "npx @vscode/vsce publish"
     },
     "maintainers": [
         "Danil0ws <mydanilows@gmail.com>"
@@ -24,7 +26,7 @@
         "url": "https://github.com/buffDev/starry-night-theme/issues"
     },
     "engines": {
-        "vscode": "^1.13.0"
+        "vscode": "^1.80.0"
     },
     "categories": [
         "Themes"
@@ -55,6 +57,7 @@
         "js-yaml": "^3.13.1",
         "prettier": "^1.19.1",
         "tinycolor2": "^1.4.1",
-        "@vscode/vsce": "^2.23.0"
+        "@vscode/vsce": "^2.23.0",
+        "ovsx": "^0.10.0"
     }
 }

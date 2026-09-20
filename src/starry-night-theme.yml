@@ -94,7 +94,7 @@ colors:
   # Base Colors
   focusBorder: *COMMENT                                                         # Overall border color for focused elements. This color is only used if not overridden by a component
   foreground: *FG                                                               # Overall foreground color. This color is only used if not overridden by a component
-  widget.shadow:                                                                # Shadow color of widgets such as Find/Replace inside the editor
+  widget.shadow: *BGDark                                                        # Shadow color of widgets such as Find/Replace inside the editor
   selection.background: *CYAN                                                 # Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
   errorForeground: *RED                                                         # Overall foreground color for error messages (this color is only used if not overridden by a component)
 
@@ -198,7 +198,9 @@ colors:
   editor.foreground: *FG
   editor.background: *BG
   editorLineNumber.foreground: *COMMENT
-  editorCursor.foreground:
+  editorLineNumber.activeForeground: *FG                                        # Color of the active line number
+  editorCursor.foreground: *CYAN                                                # Color of the editor cursor
+  editorCursor.background: *BG                                                  # Background color of the editor cursor
 
   editor.selectionBackground: *SELECTION                                        # Color of the editor selection
   editor.selectionHighlightBackground: *BGLighter                               # Color for regions with the same content as the selection
@@ -214,7 +216,7 @@ colors:
 
   editor.hoverHighlightBackground: !alpha [*BLUE, 50]                           # Highlight below the word for which a hover is shown
 
-  editor.lineHighlightBackground:                                               # Background color for the highlight of line at the cursor position
+  editor.lineHighlightBackground: *LineHighlight                                # Background color for the highlight of line at the cursor position
   editor.lineHighlightBorder: *SELECTION                                        # Background color for the border around the line at the cursor position
 
   editorLink.activeForeground: *BLUE                                            # Color of active links
@@ -400,6 +402,55 @@ colors:
   listFilterWidget.background: *BGLight                                         # Background color of the type filter widget in lists and trees.
   listFilterWidget.outline: *BGLighter                                          # Outline color of the type filter widget in lists and trees.
   listFilterWidget.noMatchesOutline: *RED                                       # Outline color of the type filter widget in lists and trees, when there are no matches.
+
+  # Inlay Hints
+  editorInlayHint.foreground: *COMMENT                                          # Foreground color of inlay hints
+  editorInlayHint.background: *BGDark                                           # Background color of inlay hints
+  editorInlayHint.typeForeground: *BLUE                                         # Foreground color for type inlay hints
+  editorInlayHint.typeBackground: *BGDark                                       # Background color for type inlay hints
+  editorInlayHint.parameterForeground: *ORANGE                                  # Foreground color for parameter inlay hints
+  editorInlayHint.parameterBackground: *BGDark                                  # Background color for parameter inlay hints
+
+  # Minimap
+  minimap.background: *BG                                                       # Minimap background color
+  minimap.findMatchHighlight: !alpha [ *ORANGE, 80 ]                            # Minimap highlight color for matches from Find
+  minimap.selectionHighlight: !alpha [ *SELECTION, 80 ]                         # Minimap highlight color for the editor selection
+  minimap.errorHighlight: !alpha [ *RED, 80 ]                                   # Minimap highlight color for errors
+  minimap.warningHighlight: !alpha [ *ORANGE, 80 ]                              # Minimap highlight color for warnings
+
+  # Trees
+  tree.indentGuidesStroke: *NonText                                             # Tree indent guides stroke color
+  tree.inactiveIndentGuidesStroke: *NonText                                     # Tree indent guides stroke color when the tree is not focused
+
+  # Text (markdown preview, etc.)
+  textLink.foreground: *BLUE                                                    # Foreground color for links in text
+  textLink.activeForeground: *CYAN                                              # Foreground color for links in text when clicked on / hovered
+  textPreformat.foreground: *GREEN                                              # Foreground color for preformatted text segments
+  textPreformat.background: *BGDark                                             # Background color for preformatted text segments
+  textPreformat.border: *BGDarker                                               # Border color for preformatted text segments
+  textBlockQuote.background: *BGDark                                            # Background color for block quotes in text
+  textBlockQuote.border: *CYAN                                                  # Border color for block quotes in text
+  textSeparator.foreground: *COMMENT                                            # Color for the text separators
+
+  # Widgets
+  widget.border: *BGDarker                                                      # Border color of widgets such as Find/Replace inside the editor
+  # Toolbar
+  toolbar.hoverBackground: !alpha [ *CYAN, 20 ]                                 # Toolbar background when hovering over actions
+  toolbar.activeBackground: !alpha [ *CYAN, 30 ]                                # Toolbar background when holding the mouse over actions
+  toolbar.hoverOutline: *BGDarker                                               # Toolbar background when hovering over actions
+
+  # Title Bar / Window
+  titleBar.border: *BGDarker                                                    # Title Bar border color
+  window.activeBorder: *BGDarker                                                # Window border color when the window is active
+  window.inactiveBorder: *BGDarker                                              # Window border color when the window is inactive
+
+  # Welcome Page
+  welcomePage.background: *BG                                                   # Background color for the Welcome page
+  welcomePage.progress.background: *BGDarker                                    # Background color for the Welcome page progress bars
+  welcomePage.progress.foreground: *CYAN                                        # Foreground color for the Welcome page progress bars
+  welcomePage.tileBackground: *BGDark                                           # Background color for the tiles on the Welcome page
+  welcomePage.tileHoverBackground: !alpha [ *CYAN, 20 ]                         # Hover background color for the tiles on the Welcome page
+  welcomePage.tileBorder: *BGDarker                                             # Border color for the tiles on the Welcome page
 
 # Syntaxes
 tokenColors:

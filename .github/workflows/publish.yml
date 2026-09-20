@@ -1,0 +1,133 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (e.g. v1.0.0). Empty uses the pushed tag.'
+        required: false
+        default: ''
+
+env:
+  PUBLISHER: Danil0ws
+  EXTENSION: starry-night-theme
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - name: Sync version from tag
+        run: |
+          TAG="${{ inputs.tag }}"
+          if [ -z "$TAG" ]; then TAG="${GITHUB_REF_NAME}"; fi
+          npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+        # Generates nothing if tag and package.json agree; keeps artifacts in sync otherwise.
+      - run: npm run build
+      - run: npm run build:intellij
+      - name: Package VSIX
+        run: |
+          mkdir -p bin
+          npm run package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bin
+          path: bin/
+
+  vscode-marketplace:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin
+          path: bin
+      - name: Publish (skip if version exists)
+        env:
+          VSCE_PUBLISHER_TOKEN: ${{ secrets.VSCE_PUBLISHER_TOKEN }}
+        run: |
+          set -e
+          VERSION="${GITHUB_REF_NAME#v}"
+          RESP=$(curl -s -X POST 'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery' \
+            -H 'Content-Type: application/json' \
+            -H 'Accept: application/json;api-version=3.0-preview.1' \
+            -d '{"filters":[{"criteria":[{"filterType":7,"value":"'$PUBLISHER.$EXTENSION'"}]}],"flags":914}')
+          if echo "$RESP" | jq -e --arg v "$VERSION" '[.results[0].extensions[0].versions[]?.version] | index($v)' >/dev/null; then
+            echo "Version $VERSION already on VS Code Marketplace, skipping."
+          else
+            npx @vscode/vsce publish --pat "$VSCE_PUBLISHER_TOKEN"
+          fi
+
+  open-vsx:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin
+          path: bin
+      - name: Publish (skip if version exists)
+        env:
+          OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
+        run: |
+          set -e
+          VERSION="${GITHUB_REF_NAME#v}"
+          EXISTS=$(curl -s "https://open-vsx.org/api/$PUBLISHER/$EXTENSION" | jq -r --arg v "$VERSION" '.versions[]? | select(. == $v)')
+          if [ -n "$EXISTS" ]; then
+            echo "Version $VERSION already on Open VSX, skipping."
+          else
+            npx ovsx publish ./bin/starry-night-theme.vsix -p "$OVSX_TOKEN"
+          fi
+
+  jetbrains:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin
+          path: bin
+      - name: Upload to JetBrains Marketplace
+        if: env.JETBRAINS_TOKEN != ''
+        run: |
+          curl -sS -X POST 'https://plugins.jetbrains.com/plugin/uploadPlugin' \
+            -H "Authorization: Bearer $JETBRAINS_TOKEN" \
+            -F 'file=@bin/starry-night-theme-jetbrains.zip' \
+            -F 'pluginId=com.buffdev.starry-night-theme' \
+            -F 'channel=stable'
+      - name: JetBrains upload skipped
+        if: env.JETBRAINS_TOKEN == ''
+        run: echo "JETBRAINS_TOKEN not set; skipping JetBrains Marketplace."
+
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: bin
+          path: bin
+      - name: Extract release notes
+        run: head -n 120 CHANGELOG.md > RELEASE_NOTES.md 2>/dev/null || touch RELEASE_NOTES.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            bin/starry-night-theme.vsix
+            bin/starry-night-theme-jetbrains.zip
+          body_path: RELEASE_NOTES.md
+          fail_on_unmatched_files: false

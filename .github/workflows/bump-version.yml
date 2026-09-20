@@ -1,0 +1,38 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Semver bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - name: Bump version and push tag
+        env:
+          TYPE: ${{ inputs.type }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm version "$TYPE" -m "ci: version bump to v%s"
+          git push origin master
+          git push --tags
