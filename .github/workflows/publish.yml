@@ -85,7 +85,7 @@ jobs:
         run: |
           set -e
           VERSION="${GITHUB_REF_NAME#v}"
-          EXISTS=$(curl -s "https://open-vsx.org/api/$PUBLISHER/$EXTENSION" | jq -r --arg v "$VERSION" '.versions[]? | select(. == $v)')
+          EXISTS=$(curl -s "https://open-vsx.org/api/$PUBLISHER/$EXTENSION" | jq -r --arg v "$VERSION" 'if .allVersions then (.allVersions | has($v)) else false end')
           if [ -n "$EXISTS" ]; then
             echo "Version $VERSION already on Open VSX, skipping."
           else
