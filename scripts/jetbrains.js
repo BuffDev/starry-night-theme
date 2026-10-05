@@ -4,7 +4,7 @@
  *
  *   bin/jetbrains/starry-night-theme.icls   - editor color scheme (standalone-installable)
  *   bin/jetbrains/starry-night.theme.json   - UI theme (new JSON format, 2020.1+)
- *   bin/jetbrains/starry-night-theme/lib/starry-night-theme.jar - plugin jar (META-INF/plugin.xml + resources)
+ *   bin/jetbrains/starry-night-theme/lib/starry-night-theme.jar - plugin jar (META-INF/plugin.xml, pluginIcon.png, icls, theme.json)
  *   bin/starry-night-theme-jetbrains.zip    - Marketplace archive (<plugin-name>/lib/*.jar)
  *
  * Dev note: this is a working approximation of the JetBrains theme grammar, not
@@ -200,6 +200,41 @@ function buildThemeJson(colors) {
     );
 }
 
+// README/CHANGELOG are markdown, the descriptor wants HTML. Keeps it minimal:
+// drops headings/images, one <p> per paragraph, bold and links only.
+function mdToHtml(md) {
+    return md
+        .split(/\n{2,}/)
+        .map(p =>
+            p
+                .split('\n')
+                .map(l => l.replace(/^\s*(#|>|-|\|)+\s*/, '').trim())
+                .filter(l => l && !l.startsWith('![') && !l.startsWith('<'))
+                .join(' ')
+        )
+        .filter(Boolean)
+        .map(p =>
+            `<p>${p
+                .replace(/`/g, '')
+                .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+                .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')}</p>`
+        )
+        .join('\n');
+}
+
+// Intro of the README (everything before the first "## " section).
+function readmeIntro() {
+    const md = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+    return md.replace(/^#\s.*\n/, '').split(/^##\s/m)[0];
+}
+
+// Latest CHANGELOG section, without its "## [x.y.z] - date" heading.
+function changelogLatest() {
+    const md = fs.readFileSync(path.join(ROOT, 'CHANGELOG.md'), 'utf8');
+    const sections = md.split(/^##\s/m).slice(1);
+    return sections[0] ? sections[0].replace(/^.*\n/, '') : '';
+}
+
 function buildPluginXml() {
     return `<?xml version="1.0" encoding="UTF-8"?>
 <idea-plugin>
@@ -209,8 +244,11 @@ function buildPluginXml() {
   <idea-version since-build="201"/>
   <vendor email="mydanilows@gmail.com" url="https://github.com/buffDev/starry-night-theme">BuffDev</vendor>
   <description><![CDATA[
-Dark theme inspired by Van Gogh's Starry Night for JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, GoLand, etc.).
+${mdToHtml(readmeIntro())}
   ]]></description>
+  <change-notes><![CDATA[
+${mdToHtml(changelogLatest())}
+  ]]></change-notes>
   <depends>com.intellij.modules.platform</depends>
   <extensions defaultExtensionNs="com.intellij">
     <theme id="com.buffdev.starry-night-theme" path="/starry-night.theme.json"/>
@@ -245,6 +283,8 @@ async function main() {
     try {
         fs.mkdirSync(path.join(stage, 'META-INF'), { recursive: true });
         fs.writeFileSync(path.join(stage, 'META-INF', 'plugin.xml'), pluginXml);
+        // Marketplace plugin icon (128x128 PNG, repo root).
+        fs.copyFileSync(path.join(ROOT, 'icon.png'), path.join(stage, 'META-INF', 'pluginIcon.png'));
         fs.writeFileSync(path.join(stage, 'starry-night-theme.icls'), icls);
         fs.writeFileSync(path.join(stage, 'starry-night.theme.json'), themeJson);
         execFileSync('zip', ['-qr', jarPath, '.'], { cwd: stage });
@@ -262,6 +302,9 @@ async function main() {
     }
     if (!/<idea-version since-build="\d+/.test(pluginXml)) {
         throw new Error('plugin.xml without <idea-version since-build> — Marketplace rejects the upload');
+    }
+    if (!pluginXml.includes('<change-notes>')) {
+        throw new Error('plugin.xml without <change-notes> — Marketplace shows no "What\'s new"');
     }
     if (!pluginXml.includes('<depends>com.intellij.modules.platform</depends>')) {
         throw new Error('plugin.xml without platform dependency — Marketplace treats it as legacy IDEA-only');
