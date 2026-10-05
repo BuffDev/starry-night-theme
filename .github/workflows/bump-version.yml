@@ -26,11 +26,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm install
+      # npm version needs no deps; installing here dirtied the tree and made
+      # `npm version` abort with "Git working directory not clean."
       - name: Bump version and push tag
         env:
           TYPE: ${{ inputs.type }}
         run: |
+          git status --porcelain || true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           npm version "$TYPE" -m "ci: version bump to v%s"
