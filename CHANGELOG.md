@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [2.0.2] - 2026-10-05
 
 - Removed the internal 1px borders/separators (editor group, panel, tab strip,
   title bar, sidebar section headers, inputs, dropdowns, settings and welcome
