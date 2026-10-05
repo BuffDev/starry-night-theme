@@ -223,6 +223,9 @@ async function main() {
     const themeJson = buildThemeJson(colors);
     const pluginXml = buildPluginXml();
 
+    // bin/ is gitignored; create it on fresh checkouts (CI).
+    fs.mkdirSync(OUT, { recursive: true });
+
     // Standalone artifacts (manual install into <IDE>/colors, see INSTALL.md).
     fs.writeFileSync(path.join(OUT, 'starry-night-theme.icls'), icls);
     fs.writeFileSync(path.join(OUT, 'starry-night.theme.json'), themeJson);
