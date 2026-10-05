@@ -206,6 +206,7 @@ function buildPluginXml() {
   <id>com.buffdev.starry-night-theme</id>
   <name>Starry Night Theme</name>
   <version>${esc(version)}</version>
+  <idea-version since-build="201"/>
   <vendor email="mydanilows@gmail.com" url="https://github.com/buffDev/starry-night-theme">BuffDev</vendor>
   <description><![CDATA[
 Dark theme inspired by Van Gogh's Starry Night for JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, GoLand, etc.).
@@ -257,6 +258,9 @@ async function main() {
     const listing = execFileSync('unzip', ['-l', zipPath], { encoding: 'utf8' });
     if (!listing.includes(`${PLUGIN_NAME}/lib/${PLUGIN_NAME}.jar`)) {
         throw new Error(`unexpected archive layout, Marketplace would reject it:\n${listing}`);
+    }
+    if (!/<idea-version since-build="\d+/.test(pluginXml)) {
+        throw new Error('plugin.xml without <idea-version since-build> — Marketplace rejects the upload');
     }
 
     console.log(
