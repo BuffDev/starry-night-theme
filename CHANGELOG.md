@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+- Removed the internal 1px borders/separators (editor group, panel, tab strip,
+  title bar, sidebar section headers, inputs, dropdowns, settings and welcome
+  widgets, overview ruler) — they are transparent now; separation comes from the
+  surface contrast only. Focus rings (`focusBorder`) and validation borders stay.
+- More starry yellow: yellow active-tab top border and dirty-tab marker, yellow
+  activity-bar indicator, yellow list/search match highlights, yellow for modified
+  files in SCM decorations, and yellow badges.
+
 ## [2.0.0] - 2026-10-04
 
 Visual redesign based on the "shadcn x Starry Night" mockup (rounded, Musea/OpenAI
