@@ -2,6 +2,8 @@ name: Publish
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
   workflow_dispatch:
@@ -26,6 +28,7 @@ jobs:
           cache: npm
       - run: npm install
       - name: Sync version from tag
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           TAG="${{ inputs.tag }}"
           if [ -z "$TAG" ]; then TAG="${GITHUB_REF_NAME}"; fi
@@ -57,7 +60,7 @@ jobs:
           VSCE_PUBLISHER_TOKEN: ${{ secrets.VSCE_PUBLISHER_TOKEN }}
         run: |
           set -e
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION=$(unzip -p ./bin/starry-night-theme.vsix extension/package.json | jq -r .version)
           RESP=$(curl -s -X POST 'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery' \
             -H 'Content-Type: application/json' \
             -H 'Accept: application/json;api-version=3.0-preview.1' \
@@ -84,9 +87,9 @@ jobs:
         if: env.OVSX_TOKEN != ''
         run: |
           set -e
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION=$(unzip -p ./bin/starry-night-theme.vsix extension/package.json | jq -r .version)
           EXISTS=$(curl -s "https://open-vsx.org/api/$PUBLISHER/$EXTENSION" | jq -r --arg v "$VERSION" 'if .allVersions then (.allVersions | has($v)) else false end')
-          if [ -n "$EXISTS" ]; then
+          if [ "$EXISTS" = "true" ]; then
             echo "Version $VERSION already on Open VSX, skipping."
           else
             npx ovsx create-namespace "$PUBLISHER" -p "$OVSX_TOKEN" || true
@@ -131,6 +134,7 @@ jobs:
         run: echo "JETBRAINS_TOKEN not set; skipping JetBrains Marketplace."
 
   github-release:
+    if: startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
     permissions:
