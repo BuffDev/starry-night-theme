@@ -211,6 +211,7 @@ function buildPluginXml() {
   <description><![CDATA[
 Dark theme inspired by Van Gogh's Starry Night for JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, GoLand, etc.).
   ]]></description>
+  <depends>com.intellij.modules.platform</depends>
   <extensions defaultExtensionNs="com.intellij">
     <theme id="com.buffdev.starry-night-theme" path="/starry-night.theme.json"/>
   </extensions>
@@ -261,6 +262,9 @@ async function main() {
     }
     if (!/<idea-version since-build="\d+/.test(pluginXml)) {
         throw new Error('plugin.xml without <idea-version since-build> — Marketplace rejects the upload');
+    }
+    if (!pluginXml.includes('<depends>com.intellij.modules.platform</depends>')) {
+        throw new Error('plugin.xml without platform dependency — Marketplace treats it as legacy IDEA-only');
     }
 
     console.log(
