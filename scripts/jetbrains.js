@@ -4,8 +4,8 @@
  *
  *   bin/jetbrains/starry-night-theme.icls   - editor color scheme (standalone-installable)
  *   bin/jetbrains/starry-night.theme.json   - UI theme (new JSON format, 2020.1+)
- *   bin/jetbrains/lib/starry-night-theme.jar - plugin distribution jar (META-INF/plugin.xml + resources)
- *   bin/starry-night-theme-jetbrains.zip    - installable plugin package (zip root = plugin root, only lib/)
+ *   bin/jetbrains/starry-night-theme/lib/starry-night-theme.jar - plugin jar (META-INF/plugin.xml + resources)
+ *   bin/starry-night-theme-jetbrains.zip    - Marketplace archive (<plugin-name>/lib/*.jar)
  *
  * Dev note: this is a working approximation of the JetBrains theme grammar, not
  * a 1:1 mapping of every VS Code key. Unknown attribute/scheme color names are
@@ -19,6 +19,8 @@ const generate = require('./generate');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'bin', 'jetbrains');
+// Marketplace requires <plugin-name>/lib/*.jar inside the archive.
+const PLUGIN_NAME = 'starry-night-theme';
 const { version, name, publisher } = require(path.join(ROOT, 'package.json'));
 
 const hex = c => String(c || '').replace('#', '').toUpperCase().slice(0, 6);
@@ -230,11 +232,13 @@ async function main() {
     fs.writeFileSync(path.join(OUT, 'starry-night-theme.icls'), icls);
     fs.writeFileSync(path.join(OUT, 'starry-night.theme.json'), themeJson);
 
-    // JetBrains requires the plugin distribution as a jar in lib/; the plugin
-    // root (zip root) must not contain META-INF/icls/theme.json directly.
-    const jarPath = path.join(OUT, 'lib', 'starry-night-theme.jar');
-    fs.rmSync(path.join(OUT, 'lib'), { recursive: true, force: true });
-    fs.mkdirSync(path.join(OUT, 'lib'), { recursive: true });
+    // Marketplace only accepts archives shaped <plugin-name>/lib/*.jar
+    // (UnexpectedPluginZipStructure otherwise). The jar itself carries
+    // META-INF/plugin.xml + icls + theme.json; the plugin root must not.
+    const pluginRoot = path.join(OUT, PLUGIN_NAME);
+    fs.rmSync(pluginRoot, { recursive: true, force: true });
+    const jarPath = path.join(pluginRoot, 'lib', `${PLUGIN_NAME}.jar`);
+    fs.mkdirSync(path.join(pluginRoot, 'lib'), { recursive: true });
     const stage = fs.mkdtempSync(path.join(OUT, '.jar-stage-'));
     try {
         fs.mkdirSync(path.join(stage, 'META-INF'), { recursive: true });
@@ -248,7 +252,12 @@ async function main() {
 
     const zipPath = path.join(ROOT, 'bin', 'starry-night-theme-jetbrains.zip');
     fs.rmSync(zipPath, { force: true });
-    execFileSync('zip', ['-qr', zipPath, 'lib'], { cwd: OUT });
+    execFileSync('zip', ['-qr', zipPath, PLUGIN_NAME], { cwd: OUT });
+
+    const listing = execFileSync('unzip', ['-l', zipPath], { encoding: 'utf8' });
+    if (!listing.includes(`${PLUGIN_NAME}/lib/${PLUGIN_NAME}.jar`)) {
+        throw new Error(`unexpected archive layout, Marketplace would reject it:\n${listing}`);
+    }
 
     console.log(
         `[jetbrains] wrote ${jarPath} (META-INF/plugin.xml, icls, theme.json) + standalone files -> ${zipPath}`
