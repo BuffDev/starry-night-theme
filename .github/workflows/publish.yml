@@ -106,6 +106,7 @@ jobs:
     env:
       JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: bin
@@ -120,14 +121,17 @@ jobs:
           # there, copy the numeric id from its URL, and set it as the
           # JETBRAINS_PLUGIN_ID secret. Until then this step passes with a
           # notice instead of failing the release.
-          if [ -n "$JETBRAINS_PLUGIN_ID" ]; then
+          if [ "$JETBRAINS_TOKEN" = "***" ] || ! [[ "$JETBRAINS_PLUGIN_ID" =~ ^[0-9]+$ ]]; then
+            echo "JetBrains secrets unset/placeholder — set JETBRAINS_TOKEN and the numeric JETBRAINS_PLUGIN_ID (plugins.jetbrains.com/plugin/<id>) in repo secrets. Skipping upload."
+          elif curl -sf "https://plugins.jetbrains.com/api/plugins/$JETBRAINS_PLUGIN_ID/updates?size=200" \
+              | jq -e --arg v "$(node -p "require('./package.json').version")" '[.[].version] | index($v) != null' >/dev/null; then
+            echo "Version $(node -p "require('./package.json').version") already on JetBrains Marketplace, skipping."
+          else
             curl --fail-with-body -sS -X POST 'https://plugins.jetbrains.com/plugin/uploadPlugin' \
               -H "Authorization: Bearer $JETBRAINS_TOKEN" \
               -F "pluginId=$JETBRAINS_PLUGIN_ID" \
               -F 'file=@bin/starry-night-theme-jetbrains.zip' \
               -F 'channel=stable'
-          else
-            echo "JETBRAINS_PLUGIN_ID not set — upload bin/starry-night-theme-jetbrains.zip once via plugins.jetbrains.com and set the numeric plugin id as a repo secret to enable automatic uploads."
           fi
       - name: JetBrains upload skipped
         if: env.JETBRAINS_TOKEN == ''
