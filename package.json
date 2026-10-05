@@ -1,6 +1,6 @@
 {
     "name": "starry-night-theme",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "displayName": "Starry Night Theme",
     "homepage": "https://github.com/buffDev/starry-night-theme",
     "description": "Dark theme inspired by Van Gogh's Starry Night for VS Code",
@@ -41,7 +41,7 @@
     ],
     "icon": "icon.png",
     "galleryBanner": {
-        "color": "#001F3F",
+        "color": "#131E33",
         "theme": "dark"
     },
     "contributes": {
