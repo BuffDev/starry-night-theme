@@ -39,7 +39,10 @@ Applies equally to VSCodium, Windsurf and other VS Code-compatible editors (thei
 1. `Settings/Preferences` → `Plugins` → `Marketplace` tab
 2. Search for `Starry Night Theme` and install, or download `starry-night-theme-jetbrains.zip` from the [latest release](https://github.com/buffDev/starry-night-theme/releases) and use `Install Plugin from Disk...`
 3. `Settings/Preferences` → `Appearance & Behavior` → `Appearance` → Theme → `Starry Night Theme`
-4. Editor colors load automatically with the theme.
+4. Editor colors load automatically with the theme. If the editor still shows
+   other colors (e.g. the built-in `Dark` scheme — the IDE keeps the previous one
+   when a theme's editor scheme fails to load), select it by hand:
+   `Settings/Preferences` → `Editor` → `Color Scheme` → `Starry Night Theme`.
 
 #### Standalone editor scheme (just colors)
 

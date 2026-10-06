@@ -24,24 +24,38 @@ const PLUGIN_NAME = 'starry-night-theme';
 const { version, name, publisher } = require(path.join(ROOT, 'package.json'));
 
 const hex = c => String(c || '').replace('#', '').toUpperCase().slice(0, 6);
-const hexOr = (c, f) => (c ? hex(c) : f);
+// '#RRGGBB00' is the source convention for "no border/separator" (AGENTS.md):
+// slicing the alpha off would paint the opaque lines the VS Code theme removed.
+const isClear = c => /^#?[0-9a-f]{6}00$/i.test(String(c || ''));
+const hexOr = (c, f) => (c ? (isClear(c) ? '' : hex(c)) : f); // scheme: '' = inherit
+const uiColor = (c, f) => '#' + (c ? (isClear(c) ? '00000000' : hex(c)) : f);
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-// JetBrains scheme colors: <key, vscode colors key, fallback hex>
+// JetBrains editor scheme <colors> entries: flat `<option name="KEY" value="HASH"/>`
+// with one colour each — the nested <value> shape belongs to <attributes> only.
+// <key, vscode colors key, fallback hex>
 const SCHEME_COLORS = [
-    ['TEXT', 'editor.foreground', 'F6F6F6'],
-    ['BACKGROUND', 'editor.background', '011627'],
     ['CARET_COLOR', 'editorCursor.foreground', '87D8F6'],
     ['CARET_ROW_COLOR', 'editor.lineHighlightBackground', '002137'],
     ['SELECTION_BACKGROUND', 'editor.selectionBackground', '5A839D'],
     ['SELECTION_FOREGROUND', 'editor.selectionForeground', 'F6F6F6'],
-    ['LINE_NUMBER', 'editorLineNumber.foreground', '024D75'],
-    ['LINE_NUMBER_ON_CARET_LINE', 'editorLineNumber.activeForeground', 'F6F6F6'],
+    ['LINE_NUMBERS_COLOR', 'editorLineNumber.foreground', '4B5059'],
+    ['LINE_NUMBER_ON_CARET_ROW_COLOR', 'editorLineNumber.activeForeground', 'A1A3AB'],
     ['WHITESPACES', 'editorWhitespace.foreground', '394249'],
     ['INDENT_GUIDE', 'editorIndentGuide.background', '394249'],
-    ['INACTIVE_INDENT_GUIDE', 'editorIndentGuide.background', '394249'],
     ['RIGHT_MARGIN_COLOR', 'editorRuler.foreground', '394249'],
-    ['GUTTER_BACKGROUND', 'editorGutter.background', '011627'],
+    ['EDITOR_GUTTER_BACKGROUND', 'editorGutter.background', '131E33'],
+    ['CONSOLE_BACKGROUND_KEY', 'terminal.background', '011627'],
+    ['ADDED_LINES_COLOR', 'editorGutter.addedBackground', '549159'],
+    ['MODIFIED_LINES_COLOR', 'editorGutter.modifiedBackground', '375FAD'],
+    ['DELETED_LINES_COLOR', 'editorGutter.deletedBackground', '868A91'],
+    ['FILESTATUS_MODIFIED', 'gitDecoration.modifiedResourceForeground', '70AEFF'],
+    ['FILESTATUS_ADDED', 'editorGutter.addedBackground', '73BD79'],
+    ['FILESTATUS_DELETED', 'gitDecoration.deletedResourceForeground', '6F737A'],
+    ['FILESTATUS_UNKNOWN', 'gitDecoration.untrackedResourceForeground', 'E88F89'],
+    ['FILESTATUS_IDEA_FILESTATUS_IGNORED', 'gitDecoration.ignoredResourceForeground', 'D69A6B'],
+    ['FILESTATUS_changelistConflict', 'gitDecoration.conflictingResourceForeground', 'DE6A66'],
+    ['ERROR_HINT', 'editorError.background', '402929'],
 ];
 
 // JetBrains text attributes: <attribute, textmate scope, fallback hex, fontStyle>
@@ -95,37 +109,211 @@ const ATTRIBUTES = [
 
 // UI theme mapping: JetBrains component key -> [vscode colors key(s), fallback]
 // Only well-known JBUI keys are used; invalid ones are ignored by the IDE.
+// New UI (2023.3+) reads MainToolbar.*/MainWindow.*/EditorTabs.*/StatusBar.*/
+// ToolWindow.HeaderTab.*; TabbedPane.*/TitlePane.* only matter to the classic UI.
 const UI = {
+    // Defaults every component that is not overridden below inherits.
+    '*': {
+        background: ['sideBar.background', '011627'],
+        foreground: ['foreground', 'F6F6F6'],
+        borderColor: ['sideBarSectionHeader.border', '00000000'],
+        separatorColor: ['sideBarSectionHeader.border', '00000000'],
+        separatorForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        disabledText: ['tab.inactiveForeground', 'B0B0B0'],
+        disabledForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        disabledBackground: ['input.background', '011627'],
+        inactiveForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        infoForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        acceleratorForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        shortcutForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        selectionBackground: ['list.activeSelectionBackground', '5A839D'],
+        lightSelectionBackground: ['list.inactiveSelectionBackground', '002137'],
+        selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'],
+        selectionInactiveBackground: ['list.inactiveSelectionBackground', '002137'],
+        selectionInactiveForeground: ['list.activeSelectionForeground', 'F6F6F6'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        underlineColor: ['tab.activeBorderTop', '002137'],
+        inactiveUnderlineColor: ['titleBar.inactiveBackground', '000A14'],
+        focusColor: ['focusBorder', '5A839D'],
+        focusedBorderColor: ['focusBorder', '5A839D'],
+        modifiedItemForeground: ['gitDecoration.modifiedResourceForeground', '70AEFF'],
+    },
+
+    // Window chrome: the header strip above the tool windows and editor tabs.
+    MainWindow: { background: ['titleBar.activeBackground', '011627'] },
+    MainToolbar: {
+        background: ['titleBar.activeBackground', '011627'],
+        inactiveBackground: ['titleBar.inactiveBackground', '011627'],
+        borderColor: ['titleBar.border', '00000000'],
+        separatorColor: ['titleBar.border', '00000000'],
+    },
+    'MainToolbar.Icon': { background: ['titleBar.activeBackground', '011627'], pressedBackground: ['list.hoverBackground', '002137'] },
+    'MainToolbar.Dropdown': { pressedBackground: ['list.hoverBackground', '002137'], transparentHoverBackground: ['list.hoverBackground', '002137'] },
+    'MainWindow.Tab': {
+        background: ['titleBar.activeBackground', '011627'],
+        foreground: ['tab.inactiveForeground', 'B0B0B0'],
+        selectedBackground: ['sideBar.background', '011627'],
+        selectedForeground: ['titleBar.activeForeground', 'F6F6F6'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        separatorColor: ['titleBar.border', '00000000'],
+    },
+    // Vertical stripe holding the tool window buttons.
+    'ToolWindow.Stripe': {
+        background: ['activityBar.background', '011627'],
+        borderColor: ['activityBar.border', '00000000'],
+        separatorColor: ['activityBar.border', '00000000'],
+    },
+
+    // Editor tabs; New UI underlines the selected tab with the accent.
+    EditorTabs: {
+        background: ['editorGroupHeader.tabsBackground', '000A14'],
+        borderColor: ['tab.border', '00000000'],
+        underTabsBorderColor: ['tab.border', '00000000'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        hoverInactiveBackground: ['list.hoverBackground', '002137'],
+        inactiveColoredFileBackground: ['tab.inactiveBackground', '000A14'],
+        underlineColor: ['tab.activeBorderTop', '002137'],
+        inactiveUnderlineColor: ['titleBar.inactiveBackground', '000A14'],
+        underlinedBorderColor: ['tab.activeBorderTop', '002137'],
+        inactiveUnderlinedTabBorderColor: ['titleBar.inactiveBackground', '000A14'],
+        underlinedTabBackground: ['tab.activeBackground', '011627'],
+        underlinedTabForeground: ['tab.activeForeground', 'F6F6F6'],
+        inactiveUnderlinedTabBackground: ['tab.inactiveBackground', '000A14'],
+    },
+
     Editor: { background: ['editor.background', '011627'], foreground: ['editor.foreground', 'F6F6F6'], caretRowBackground: ['editor.lineHighlightBackground', '002137'] },
-    Viewer: { background: ['sideBar.background', '011627'], foreground: ['sideBar.foreground', 'F6F6F6'] },
+    'Editor.SearchField': { background: ['input.background', '011627'], borderColor: ['input.border', '00000000'] },
+    'Editor.Toolbar': { borderColor: ['editorGroup.border', '00000000'] },
+    EditorPane: { background: ['editor.background', '011627'], inactiveBackground: ['editor.background', '011627'], splitBorder: ['editorGroup.border', '00000000'] },
+    Viewer: { background: ['sideBar.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
     'Viewer.Transparent': { background: ['sideBar.background', '011627'] },
-    ToolWindow: { background: ['sideBar.background', '011627'], foreground: ['sideBar.foreground', 'F6F6F6'] },
-    'ToolWindow.Header': { background: ['sideBarSectionHeader.background', '011627'], foreground: ['sideBarTitle.foreground', 'F6F6F6'] },
-    'ToolWindow.HeaderBorder': { background: ['sideBarSectionHeader.border', '000A14'] },
-    StatusBar: { background: ['statusBar.background', '000A14'], foreground: ['statusBar.foreground', 'F6F6F6'] },
-    'StatusBar.Border': { background: ['statusBar.border', '000A14'] },
-    Menu: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
-    Popup: { background: ['editorWidget.background', '011627'], foreground: ['editorSuggestWidget.foreground', 'F6F6F6'] },
+    ToolWindow: { background: ['sideBar.background', '011627'], foreground: ['foreground', 'F6F6F6'], borderColor: ['sideBar.border', '00000000'] },
+    'ToolWindow.Header': {
+        background: ['sideBarSectionHeader.background', '011627'],
+        foreground: ['foreground', 'F6F6F6'],
+        inactiveBackground: ['sideBar.background', '011627'],
+        inactiveForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        borderColor: ['sideBarSectionHeader.border', '00000000'],
+    },
+    'ToolWindow.HeaderTab': {
+        underlineColor: ['tab.activeBorderTop', '002137'],
+        inactiveUnderlineColor: ['titleBar.inactiveBackground', '000A14'],
+        underlinedTabBackground: ['sideBar.background', '011627'],
+        underlinedTabInactiveBackground: ['sideBarSectionHeader.background', '011627'],
+        selectedInactiveBackground: ['sideBarSectionHeader.background', '011627'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        hoverInactiveBackground: ['list.hoverBackground', '002137'],
+    },
+    'ToolWindow.HeaderCloseButton': { background: ['list.hoverBackground', '002137'] },
+    'ToolWindow.Button': {
+        foreground: ['tab.inactiveForeground', 'B0B0B0'],
+        selectedForeground: ['list.activeSelectionForeground', 'F6F6F6'],
+        selectedBackground: ['list.activeSelectionBackground', '5A839D'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+    },
+    'ToolWindow.HeaderBorder': { background: ['sideBarSectionHeader.border', '00000000'] },
+    // Swing toolbars (editor consoles and friends).
+    ToolBar: { background: ['editorGroupHeader.tabsBackground', '000A14'], foreground: ['foreground', 'F6F6F6'], borderColor: ['editorGroup.border', '00000000'], separatorColor: ['editorGroup.border', '00000000'] },
+    'Toolbar.Floating': { background: ['editorWidget.background', '011627'], borderColor: ['editorWidget.border', '00000000'] },
+
+    StatusBar: { background: ['statusBar.background', '000A14'], foreground: ['statusBar.foreground', 'F6F6F6'], borderColor: ['statusBar.border', '00000000'] },
+    'StatusBar.Border': { background: ['statusBar.border', '00000000'] },
+    'StatusBar.Widget': {
+        foreground: ['statusBar.foreground', 'F6F6F6'],
+        hoverForeground: ['statusBar.foreground', 'F6F6F6'],
+        hoverBackground: ['statusBarItem.hoverBackground', '000A14'],
+        pressedBackground: ['statusBarItem.activeBackground', '000A14'],
+    },
+    'StatusBar.Breadcrumbs': {
+        foreground: ['statusBar.foreground', 'F6F6F6'],
+        hoverForeground: ['statusBar.foreground', 'F6F6F6'],
+        hoverBackground: ['statusBarItem.hoverBackground', '000A14'],
+        pressedBackground: ['statusBarItem.activeBackground', '000A14'],
+        selectionBackground: ['statusBarItem.activeBackground', '000A14'],
+        selectionInactiveBackground: ['statusBarItem.activeBackground', '000A14'],
+    },
+    MemoryIndicator: {
+        usedBackground: ['badge.background', 'FF00FF'],
+        usedForeground: ['badge.foreground', 'F6F6F6'],
+        allocatedBackground: ['statusBarItem.activeBackground', '002137'],
+        allocatedForeground: ['statusBar.foreground', 'F6F6F6'],
+    },
+    ProgressBar: { background: ['progressBar.background', 'FF00FF'], trackColor: ['input.background', '011627'], progressColor: ['progressBar.background', 'FF00FF'], failedColor: ['editorError.foreground', 'FF6F60'] },
+
+    // Data grid (Database tool windows, result sets).
+    Table: {
+        background: ['editor.background', '011627'],
+        foreground: ['foreground', 'F6F6F6'],
+        gridColor: ['editorWhitespace.foreground', '394249'],
+        stripeColor: ['sideBarSectionHeader.background', '011627'],
+        alternativeRowBackground: ['sideBarSectionHeader.background', '011627'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        hoverInactiveBackground: ['list.hoverBackground', '002137'],
+        selectionBackground: ['list.activeSelectionBackground', '5A839D'],
+        selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'],
+        sortIconColor: ['focusBorder', '5A839D'],
+    },
+    TableHeader: {
+        background: ['sideBarSectionHeader.background', '011627'],
+        foreground: ['tab.inactiveForeground', 'B0B0B0'],
+        inactiveBackground: ['sideBar.background', '011627'],
+        inactiveForeground: ['tab.inactiveForeground', 'B0B0B0'],
+        separatorColor: ['editorWhitespace.foreground', '394249'],
+        bottomSeparatorColor: ['editorWhitespace.foreground', '394249'],
+    },
+    List: {
+        background: ['sideBar.background', '011627'],
+        foreground: ['foreground', 'F6F6F6'],
+        selectionBackground: ['list.activeSelectionBackground', '5A839D'],
+        selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'],
+        selectionInactiveBackground: ['list.inactiveSelectionBackground', '002137'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        hoverInactiveBackground: ['list.hoverBackground', '002137'],
+    },
+    Tree: {
+        background: ['sideBar.background', '011627'],
+        foreground: ['foreground', 'F6F6F6'],
+        selectionBackground: ['list.activeSelectionBackground', '5A839D'],
+        selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'],
+        selectionInactiveBackground: ['list.inactiveSelectionBackground', '002137'],
+        hoverBackground: ['list.hoverBackground', '002137'],
+        hoverInactiveBackground: ['list.hoverBackground', '002137'],
+        hash: ['tree.indentGuidesStroke', '394249'],
+    },
+
+    // Popups, menus, notifications.
+    Popup: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'], borderColor: ['editorWidget.border', '00000000'], inactiveBorderColor: ['editorWidget.border', '00000000'], innerBorderColor: ['editorWidget.border', '00000000'] },
+    'Popup.Header': { activeBackground: ['sideBarSectionHeader.background', '011627'], activeForeground: ['foreground', 'F6F6F6'] },
+    'Popup.Toolbar': { background: ['sideBarSectionHeader.background', '011627'], borderColor: ['editorWidget.border', '00000000'] },
+    'Popup.Advertiser': { background: ['sideBarSectionHeader.background', '011627'], foreground: ['tab.inactiveForeground', 'B0B0B0'], borderColor: ['editorWidget.border', '00000000'] },
     'Popup.MenuSeparator': { background: ['menu.separatorBackground', '1F2937'] },
-    TabbedPane: { background: ['editorGroupHeader.tabsBackground', '000A14'], foreground: ['tab.inactiveForeground', 'B0B0B0'] },
+    PopupMenu: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
+    Menu: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'], borderColor: ['editorWidget.border', '00000000'], disabledForeground: ['tab.inactiveForeground', 'B0B0B0'], acceleratorForeground: ['tab.inactiveForeground', 'B0B0B0'] },
+    Notification: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'], borderColor: ['editorWidget.border', '00000000'] },
+    ToolTip: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'], borderColor: ['editorWidget.border', '00000000'] },
+    SearchMatch: { startBackground: ['editor.findMatchBackground', '5A839D'], endBackground: ['editor.findMatchHighlightBackground', '5A839D'] },
+    OptionPane: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
+    TabbedPane: { background: ['editorGroupHeader.tabsBackground', '000A14'], foreground: ['tab.inactiveForeground', 'B0B0B0'], underlineColor: ['tab.activeBorderTop', '002137'], hoverColor: ['list.hoverBackground', '002137'] },
     'TabbedPane.selected': { background: ['tab.activeBackground', '011627'], foreground: ['tab.activeForeground', 'F6F6F6'] },
     'TabbedPane.selectedTopBorder': { background: ['tab.activeBorderTop', '002137'] },
-    Component: { background: ['editor.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
-    'Component.border': { background: ['widget.border', '000A14'] },
-    Label: { foreground: ['foreground', 'F6F6F6'] },
-    Button: { background: ['button.background', '5A839D'], foreground: ['button.foreground', 'F6F6F6'] },
-    'Button.default': { background: ['button.background', '5A839D'], foreground: ['button.foreground', 'F6F6F6'] },
-    CheckBox: { background: ['checkbox.background', '011627'], foreground: ['checkbox.foreground', 'F6F6F6'] },
-    ComboBox: { background: ['dropdown.background', '002137'], foreground: ['dropdown.foreground', 'F6F6F6'] },
-    TextField: { background: ['input.background', '011627'], foreground: ['input.foreground', 'F6F6F6'] },
-    'TextField.border': { background: ['input.border', '000A14'] },
-    List: { background: ['sideBar.background', '011627'], foreground: ['foreground', 'F6F6F6'], selectionBackground: ['list.activeSelectionBackground', '5A839D'], selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'], hoverBackground: ['list.hoverBackground', '002137'] },
-    Tree: { background: ['sideBar.background', '011627'], foreground: ['foreground', 'F6F6F6'], selectionBackground: ['list.activeSelectionBackground', '5A839D'], selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'], hoverBackground: ['list.hoverBackground', '002137'] },
-    ProgressBar: { background: ['progressBar.background', 'FF00FF'] },
+    'TabbedPane.contentAreaColor': { background: ['editorGroup.border', '00000000'] },
+    Component: { background: ['editor.background', '011627'], foreground: ['foreground', 'F6F6F6'], borderColor: ['input.border', '00000000'], focusedBorderColor: ['focusBorder', '5A839D'], focusColor: ['focusBorder', '5A839D'] },
+    'Component.border': { background: ['input.border', '00000000'] },
+    Borders: { color: ['input.border', '00000000'], ContrastBorderColor: ['input.border', '00000000'] },
+    Separator: { separatorColor: ['sideBarSectionHeader.border', '00000000'], separatorForeground: ['tab.inactiveForeground', 'B0B0B0'] },
+    OnePixelDivider: { background: ['sideBarSectionHeader.border', '00000000'] },
+    Label: { foreground: ['foreground', 'F6F6F6'], disabledForeground: ['tab.inactiveForeground', 'B0B0B0'] },
+    Link: { activeForeground: ['textLink.foreground', '5A839D'], hoverForeground: ['textLink.activeForeground', '93C5FD'], pressedForeground: ['textLink.activeForeground', '93C5FD'], visitedForeground: ['textLink.foreground', '5A839D'], secondaryForeground: ['textLink.foreground', '5A839D'] },
+    Button: { background: ['button.background', '5A839D'], foreground: ['button.foreground', 'F6F6F6'], borderColor: ['button.border', '00000000'], disabledBorderColor: ['button.border', '00000000'], startBackground: ['button.secondaryBackground', '002137'], endBackground: ['button.secondaryBackground', '002137'], shadowColor: ['button.secondaryBackground', '002137'], focusedBorderColor: ['focusBorder', '5A839D'] },
+    'Button.default': { background: ['button.background', '5A839D'], foreground: ['button.foreground', 'F6F6F6'], startBackground: ['button.background', '5A839D'], endBackground: ['button.background', '5A839D'], startBorderColor: ['button.background', '5A839D'], endBorderColor: ['button.background', '5A839D'] },
+    CheckBox: { background: ['checkbox.background', '011627'], foreground: ['checkbox.foreground', 'F6F6F6'], select: ['focusBorder', '5A839D'] },
+    RadioButton: { background: ['checkbox.background', '011627'], foreground: ['checkbox.foreground', 'F6F6F6'] },
+    ComboBox: { background: ['dropdown.background', '002137'], foreground: ['dropdown.foreground', 'F6F6F6'], nonEditableBackground: ['dropdown.background', '002137'], borderColor: ['dropdown.border', '00000000'], arrowColor: ['tab.inactiveForeground', 'B0B0B0'], selectionBackground: ['list.activeSelectionBackground', '5A839D'], selectionForeground: ['list.activeSelectionForeground', 'F6F6F6'] },
+    TextField: { background: ['input.background', '011627'], foreground: ['input.foreground', 'F6F6F6'], borderColor: ['input.border', '00000000'], inactiveBorderColor: ['input.border', '00000000'], disabledBackground: ['input.background', '011627'], placeholderForeground: ['input.placeholderForeground', 'B0B0B0'], selectionBackground: ['editor.selectionBackground', '5A839D'] },
+    'TextField.border': { background: ['input.border', '00000000'] },
     SidePanel: { background: ['sideBar.background', '011627'] },
     TitlePane: { background: ['titleBar.activeBackground', '011627'], foreground: ['titleBar.activeForeground', 'F6F6F6'] },
-    Notification: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
-    OptionPane: { background: ['editorWidget.background', '011627'], foreground: ['foreground', 'F6F6F6'] },
+    IconBadge: { errorBackground: ['editorError.foreground', 'FF6F60'], warningBackground: ['editorWarning.foreground', 'FAB426'], successBackground: ['gitDecoration.addedResourceForeground', '83DD59'], infoBackground: ['focusBorder', '5A839D'] },
 };
 
 function scopeList(rule) {
@@ -149,10 +337,11 @@ function tokColor(tokenColors, scope, fallback) {
 const FONT_TYPE = { normal: '', italic: '1', bold: '2', 'bold italic': '3', 'italic bold': '3' };
 
 function buildIcls(colors, tokenColors) {
-    const colorXml = SCHEME_COLORS.map(([key, vscodeKey, fb]) => {
-        const v = hexOr(colors[vscodeKey], fb);
-        return `    <option name="${key}">\n      <value>\n        <option name="FOREGROUND" value="${v}"/>\n        <option name="BACKGROUND" value="${v}"/>\n      </value>\n    </option>`;
-    }).join('\n');
+    // <colors> is a flat list of one-colour options; a nested <value> in here makes
+    // the IDE reject the whole scheme and silently keep its default editor colours.
+    const colorXml = SCHEME_COLORS.map(
+        ([key, vscodeKey, fb]) => `    <option name="${key}" value="${hexOr(colors[vscodeKey], fb)}"/>`
+    ).join('\n');
 
     const attrXml = ATTRIBUTES.map(([key, scope, fb, font]) => {
         const fg = scope ? tokColor(tokenColors, scope, fb) : fb;
@@ -168,6 +357,12 @@ function buildIcls(colors, tokenColors) {
 ${colorXml}
   </colors>
   <attributes>
+    <option name="TEXT">
+      <value>
+        <option name="FOREGROUND" value="${hexOr(colors['editor.foreground'], 'F6F6F6')}"/>
+        <option name="BACKGROUND" value="${hexOr(colors['editor.background'], '011627')}"/>
+      </value>
+    </option>
     <option name="DEFAULT">
       <value>
         <option name="FOREGROUND" value="${hexOr(colors['editor.foreground'], 'F6F6F6')}"/>
@@ -184,7 +379,7 @@ function buildThemeJson(colors) {
     for (const [component, props] of Object.entries(UI)) {
         ui[component] = {};
         for (const [prop, [key, fb]] of Object.entries(props)) {
-            ui[component][prop] = '#' + hexOr(colors[key], fb);
+            ui[component][prop] = uiColor(colors[key], fb);
         }
     }
     return JSON.stringify(
@@ -264,6 +459,13 @@ async function main() {
     const icls = buildIcls(colors, base.tokenColors);
     const themeJson = buildThemeJson(colors);
     const pluginXml = buildPluginXml();
+
+    // A nested <value> inside <colors> (the <attributes> shape) makes the IDE
+    // refuse the scheme file and silently keep its own editor colours.
+    const colorsBlock = icls.slice(icls.indexOf('<colors>'), icls.indexOf('</colors>'));
+    if (colorsBlock.includes('<value>') || !/name="TEXT">\s*<value>/.test(icls)) {
+        throw new Error('icls <colors> must be flat value= options and TEXT must live in <attributes>');
+    }
 
     // bin/ is gitignored; create it on fresh checkouts (CI).
     fs.mkdirSync(OUT, { recursive: true });

@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.0.4] - 2026-10-06
+
+- JetBrains editor scheme: the `<colors>` block is written as flat
+  `<option name="KEY" value="HASH"/>` entries again — the nested `<value>` shape
+  smuggled the `<attributes>` grammar into it and made the IDE reject the whole
+  scheme, so the editor silently kept its previous colours. `TEXT` is now an
+  attribute carrying foreground *and* background, and the invented key names
+  (`LINE_NUMBER`, `LINE_NUMBER_ON_CARET_LINE`, `GUTTER_BACKGROUND`) were replaced
+  by the real ones (`LINE_NUMBERS_COLOR`, `LINE_NUMBER_ON_CARET_ROW_COLOR`,
+  `EDITOR_GUTTER_BACKGROUND`); gutter/console backgrounds follow the editor. The
+  build fails if the shape regresses.
+- JetBrains UI theme reaches the New UI chrome: `MainWindow.*`/`MainToolbar.*`
+  (window header and toolbar were still the default gray), `EditorTabs.*` (tab
+  strip plus the starry-yellow accent underline instead of the default blue,
+  selected/unfocused tab surfaces), tool window headers and stripes,
+  `StatusBar.Widget.*`/`StatusBar.Breadcrumbs.*` (status bar text was low-contrast
+  gray on the blue bar), plus `Table`/`TableHeader`, `ToolBar`, `MemoryIndicator`,
+  `ProgressBar`, `Popup.*`, `Menu`, `ToolTip`, `Link`, `IconBadge` and friends. A
+  `*` block carries the shared defaults (background, foreground, selection, hover,
+  disabled, focus).
+- `#RRGGBB00` values — the source convention for a removed border — stay
+  transparent in both JetBrains outputs instead of being sliced into opaque lines.
+
 ## [2.0.3] - 2026-10-06
 
 - JetBrains plugin descriptor: registers the theme through the themeProvider

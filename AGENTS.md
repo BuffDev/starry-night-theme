@@ -37,5 +37,8 @@ Tema dark de VS Code (e forks/JetBrains) inspirado em "Starry Night" — o fonte
 - `bin/*.vsix` e `bin/*jetbrains.zip` são artefatos versionados do release — regenerar, não editar.
 - `!alpha [ *COR, 0 ]` gera hex de 7 dígitos (inválido): use `!alpha [ *COR, '00' ]` (alpha sempre 2 caracteres).
 - VS Code desenha borda **pontilhada** no hover de botões de ícone/status via `toolbar.hoverOutline` e `contrastActiveBorder` — ambos estão `#RRGGBB00` (transparente) de propósito; hover usa só `toolbar.hoverBackground`.
+- `.icls` do JetBrains: o bloco `<colors>` é **plano** (`<option name="X" value="HASH"/>`); a forma aninhada `<value>` só existe em `<attributes>` e faz o IDE descartar o esquema inteiro (editor volta às cores default do IDE sem avisar). `bin/jetbrains/starry-night-theme.icls` é a referência; `npm run build:intellij` falha se a forma regredir.
+- New UI (DataGrip/IDEA 2023.3+) lê `MainWindow.*`, `MainToolbar.*`, `EditorTabs.*`, `ToolWindow.HeaderTab.*`, `StatusBar.Widget.*`/`StatusBar.Breadcrumbs.*`; as chaves `TabbedPane.*`/`TitlePane.*` só valem na UI clássica. `StatusBar.foreground` sozinho não colore os widgets da barra — use `StatusBar.Widget.foreground`.
+- Valor `#RRGGBB00` (borda removida na 2.0.2) vira **transparente** nas saídas JetBrains (`isClear`), nunca uma linha opaca: o alfa não pode ser só fatiado.
 
 <!-- omh:agent-instructions:end -->
