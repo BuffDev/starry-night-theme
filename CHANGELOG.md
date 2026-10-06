@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.3] - 2026-10-06
+
+- JetBrains plugin descriptor now uses `<themeProvider>`, declares the platform
+  dependency, `<idea-version since-build="201">` and ships `META-INF/pluginIcon.png`
+  plus description/change-notes taken from README/CHANGELOG — Marketplace accepts
+  the archive and tags it as a theme.
+- JetBrains archive is packaged as `<plugin-name>/lib/*.jar`; the build fails fast
+  if that layout, the theme EP, the icon or the descriptor fields go missing.
+
 ## [2.0.2] - 2026-10-05
 
 - Removed the internal 1px borders/separators (editor group, panel, tab strip,
