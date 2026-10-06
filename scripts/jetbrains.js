@@ -251,7 +251,7 @@ ${mdToHtml(changelogLatest())}
   ]]></change-notes>
   <depends>com.intellij.modules.platform</depends>
   <extensions defaultExtensionNs="com.intellij">
-    <theme id="com.buffdev.starry-night-theme" path="/starry-night.theme.json"/>
+    <themeProvider id="com.buffdev.starry-night-theme" path="/starry-night.theme.json"/>
   </extensions>
 </idea-plugin>
 `;
@@ -302,6 +302,12 @@ async function main() {
     }
     if (!/<idea-version since-build="\d+/.test(pluginXml)) {
         throw new Error('plugin.xml without <idea-version since-build> — Marketplace rejects the upload');
+    }
+    if (!pluginXml.includes('<themeProvider ')) {
+        throw new Error('plugin.xml without <themeProvider> — Marketplace will not tag the plugin as a theme');
+    }
+    if (!/META-INF\/pluginIcon\.png/.test(execFileSync('unzip', ['-l', jarPath], { encoding: 'utf8' }))) {
+        throw new Error('jar without META-INF/pluginIcon.png — Marketplace shows no plugin icon');
     }
     if (!pluginXml.includes('<change-notes>')) {
         throw new Error('plugin.xml without <change-notes> — Marketplace shows no "What\'s new"');
