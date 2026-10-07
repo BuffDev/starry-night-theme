@@ -178,7 +178,7 @@ colors:
   editorGroup.dropBackground: *TAB_DROP_BG                                      # Background color when dragging editors around
   editorGroupHeader.noTabsBackground:                                           # Background color of the editor group title header when Tabs are disabled
   editorGroupHeader.tabsBackground: *BGDark                                     # Background color of the Tabs container
-  editorGroupHeader.tabsBorder:                                                 # Border color of the editor group title header when tabs are enabled. Editor groups are the containers of editors
+  editorGroupHeader.tabsBorder: !alpha [ *BGDarker, '00' ]                      # Border color of the editor group title header when tabs are enabled (blank would fall back to the base theme's grey #303031)
   tab.activeBackground: *SELECTION                                              # Active Tab background color
   tab.activeForeground: '#FFFFFF'                                               # Active Tab foreground color in an active group
   tab.border: !alpha [ *BGDarker, '00' ] # Border to separate Tabs from each other
@@ -202,7 +202,7 @@ colors:
 
   editor.selectionBackground: *SELECTION                                        # Color of the editor selection
   editor.selectionHighlightBackground: *BGLighter                               # Color for regions with the same content as the selection
-  editor.inactiveSelectionBackground:                                           # Color of the selection in an inactive editor
+  editor.inactiveSelectionBackground: !alpha [ *SELECTION, 55 ]                  # Color of the selection in an inactive editor (blank would fall back to the base theme's grey #3A3D41)
   editor.foldBackground: *BGDark                                                # Background color for folded ranges
 
   editor.wordHighlightBackground: !alpha [ *BLUE, 50 ]                          # Background color of a symbol during read-access, for example when reading a variable
@@ -215,7 +215,7 @@ colors:
   editor.hoverHighlightBackground: !alpha [*BLUE, 50]                           # Highlight below the word for which a hover is shown
 
   editor.lineHighlightBackground: *LineHighlight                                # Background color for the highlight of line at the cursor position
-  editor.lineHighlightBorder:                                                  # Background color for the border around the line at the cursor position
+  editor.lineHighlightBorder: !alpha [ *BGDarker, '00' ]                       # Background color for the border around the line at the cursor position (kept transparent: the theme draws no separators)
 
   editorLink.activeForeground: *BLUE                                            # Color of active links
   editor.rangeHighlightBackground: !alpha [ *CYAN, 15 ]                       # Background color of highlighted ranges, like by Quick Open and Find features
@@ -397,7 +397,7 @@ colors:
   breadcrumbPicker.background: *BGDarker                                        # Background color of breadcrumb item picker
 
   # Misc
-  menu.separatorBackground:                                                     # Color of a separator menu item in menus
+  menu.separatorBackground: !alpha [ *BGDarker, '00' ]                           # Color of a separator menu item in menus (blank would fall back to the base theme's grey #454545)
   listFilterWidget.background: *BGLight                                         # Background color of the type filter widget in lists and trees.
   listFilterWidget.outline: *BGLighter                                          # Outline color of the type filter widget in lists and trees.
   listFilterWidget.noMatchesOutline: *RED                                       # Outline color of the type filter widget in lists and trees, when there are no matches.
@@ -409,6 +409,14 @@ colors:
   editorInlayHint.typeBackground: *BG                                           # Background color for type inlay hints
   editorInlayHint.parameterForeground: *ORANGE                                 # Foreground color for parameter inlay hints
   editorInlayHint.parameterBackground: *BG                                     # Background color for parameter inlay hints
+
+  # Inline chat (Copilot / inline assistants)
+  inlineChat.foreground: *FG                                                   # Foreground color of the inline chat
+  inlineChat.background: *BGDark                                               # Background color of the inline chat
+  inlineChat.border: !alpha [ *BGDarker, '00' ]                                # Border color of the inline chat
+  inlineChat.shadow: *BGDarker                                                 # Shadow color of the inline chat
+  inlineChatDiff.inserted: !alpha [ *GREEN, 20 ]                               # Background color of inserted text in the inline chat
+  inlineChatDiff.removed: !alpha [ *RED, 20 ]                                  # Background color of removed text in the inline chat
 
   # Minimap
   minimap.background: *BG                                                       # Minimap background color

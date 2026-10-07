@@ -1,5 +1,53 @@
 # Changelog
 
+## [2.0.5] - 2026-10-07
+
+- JetBrains editor scheme: every text attribute is now a **real** platform key.
+  The previous names (`KEYWORD`, `STRING`, `NUMBER`, `LINE_COMMENT`,
+  `FUNCTION_CALL`, `CLASS_NAME`, …) do not exist in any scheme the IDE reads —
+  languages register their own keys with a fallback to the "Language Defaults"
+  pair (`JAVA_KEYWORD` → `DEFAULT_KEYWORD`), so those entries themed nothing and
+  the editor silently kept Darcula's token colours while the chrome looked right.
+  The scheme now sets the `DEFAULT_*` family plus the platform attributes
+  (breadcrumbs, hyperlinks, search results, matched braces, diffs, folded text,
+  inlay hints, console/Logcat/log output), and the build fails if a known-invented
+  name comes back. 46 → 130 attributes, 21 → 52 `<colors>` keys.
+- JetBrains token colours now resolve exactly like TextMate/VS Code: the deepest
+  matching selector wins, later rules break ties. Before, the "first selector that
+  matches" heuristic fed the wrong colour to whole classes of tokens — comments
+  came out accent-blue instead of the comment grey, strings fell back to the plain
+  foreground instead of the yellow, class names were orange instead of blue and
+  keywords picked up `this`/`self`. Bold/italic were also inverted (IntelliJ's
+  `FONT_TYPE` is 1 = BOLD, 2 = ITALIC) and are now derived from the source's
+  `fontStyle`.
+- JetBrains editor scheme has no alpha channel: a `#RRGGBBAA` colour is now
+  composited over the editor background instead of being painted at full strength
+  (search results, diffs, identifier-under-caret, gutter marks), and a fully
+  transparent `#RRGGBB00` becomes an empty value = inherit, so the separators
+  VS Code deliberately removed do not grow back in the IDE.
+- JetBrains UI theme: `ActionButton`, `ToggleButton`, `Counter`, `CheckBoxMenuItem`,
+  `ComboBox.ArrowButton`, `PasswordField`, `CompletionPopup`, `DragAndDrop`,
+  `Bookmark`, `FileColor`, `VersionControl`, `WelcomeScreen`,
+  `ValidationTooltip`, `Notification.ToolWindow`/error colours,
+  `NotificationsToolwindow` and the `ProgressBar` passed/failed/indeterminate
+  states; the `*` block now carries the same property list as JetBrains' own New
+  UI dark theme (`inactiveBackground`, `caretForeground`, `textForeground`,
+  `disabledBorderColor`, `selection*Inactive`). Fixed: `TabbedPane.contentAreaColor`
+  was emitted as a component instead of a colour, and `Component.border` /
+  `TextField.border` were not real keys (both removed). 64 → 76 components,
+  243 → 312 colour properties.
+- VS Code: four keys that were left blank were **not** actually "no border" — a
+  blank theme key falls back to the base theme's own value, and `dark_vs`/
+  `dark_plus` do define them: `editorGroupHeader.tabsBorder` (`#303031`, the tab
+  strip separator 2.0.2 meant to remove), `menu.separatorBackground` (`#454545`),
+  `editor.lineHighlightBorder` and `editor.inactiveSelectionBackground`
+  (`#3A3D41`, the base theme's grey for a selection in an unfocused editor). All
+  four now use the palette explicitly, and the remaining blank keys resolve to
+  *nothing* in the base theme, so they stay blank.
+- VS Code: added the missing inline-chat colours (`inlineChat.*`,
+  `inlineChatDiff.*`) — the theme painted none of them, so Copilot's inline chat
+  fell back to the editor defaults.
+
 ## [2.0.4] - 2026-10-06
 
 - JetBrains editor scheme: the `<colors>` block is written as flat
