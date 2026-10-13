@@ -318,11 +318,11 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `statusBar.background` | `*BG` | Standard Status Bar background color |
-| `statusBar.foreground` | `*COMMENT` | Status Bar foreground color |
+| `statusBar.background` | `*BGLight` | Standard Status Bar background color |
+| `statusBar.foreground` | `*FG` | Status Bar foreground color |
 | `statusBar.debuggingBackground` | `*RED` | Status Bar background color when a program is being debugged |
 | `statusBar.debuggingForeground` | `*INK` | Status Bar foreground color when a program is being debugged |
-| `statusBar.noFolderBackground` | `*BG` | Status Bar foreground color when no folder is opened |
+| `statusBar.noFolderBackground` | `*BGLight` | Status Bar foreground color when no folder is opened |
 | `statusBar.noFolderForeground` | `*INK` | Status Bar background color when no folder is opened |
 | `statusBarItem.activeBackground` | `!alpha [ *INK, '35' ]` | Status Bar item background color when clicking |
 | `statusBarItem.hoverBackground` | `!alpha [ *INK, '20' ]` | Status Bar item background color when hovering |

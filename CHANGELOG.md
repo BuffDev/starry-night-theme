@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.10] - 2026-10-13
+
+### Status bar visível de novo (flat não significa invisível)
+
+A 2.0.8/2.0.9 deixaram a status bar com o mesmo fundo `*BG` do editor — a faixa desapareceu (contraste 0).
+
+- `statusBar.background` / `statusBar.noFolderBackground` → `*BGLight` (#0F1D31): uma faixa levemente mais escura que o editor — separa por cor, sem borda.
+- `statusBar.foreground` → `*FG` (#E8EEF5, AA sobre #0F1D31).
+
 ## [2.0.9] - 2026-10-13
 
 ### Campos de texto com cor própria, sem borda · painel de Chat sem linha
