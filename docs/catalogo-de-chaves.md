@@ -88,9 +88,9 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
 | `scrollbar.shadow` | `!alpha [ *BGDarker, '00' ]` |  |
-| `scrollbarSlider.activeBackground` | `!alpha [ *BGDarker, '00' ]` |  |
-| `scrollbarSlider.background` | `!alpha [ *BGDarker, '00' ]` |  |
-| `scrollbarSlider.hoverBackground` | `!alpha [ *BGDarker, '00' ]` |  |
+| `scrollbarSlider.activeBackground` | `!alpha [ *BGLighter, 'F0' ]` |  |
+| `scrollbarSlider.background` | `!alpha [ *BGLighter, 'A0' ]` |  |
+| `scrollbarSlider.hoverBackground` | `!alpha [ *BGLighter, 'D0' ]` |  |
 
 ## Badge
 
@@ -116,11 +116,11 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `list.highlightForeground` | `*YELLOW` | List/Tree foreground color of the match highlights when searching inside the list/tree |
 | `list.hoverBackground` | `*BGLighter` | List/Tree background when hovering over items using the mouse |
 | `list.inactiveSelectionBackground` | `!alpha [ *SELECTION, '55' ]` | List/Tree background color for the selected item when the list/tree is inactive |
-| `list.inactiveSelectionForeground` | `!alpha [ *BGDarker, '00' ]` |  |
+| `list.inactiveSelectionForeground` | `*FG` |  |
 | `list.warningForeground` | `*ORANGE` | Color of warning decorations in the explorer |
 | `list.errorForeground` | `*RED` | Color of error decorations in the explorer |
-| `list.hoverForeground` | `!alpha [ *BGDarker, '00' ]` |  |
-| `list.focusForeground` | `!alpha [ *BGDarker, '00' ]` |  |
+| `list.hoverForeground` | `*FG` |  |
+| `list.focusForeground` | `*FG` |  |
 
 ## Activity Bar
 
@@ -140,11 +140,11 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
 | `sideBar.background` | `*BGDark` | Side Bar background color |
-| `sideBar.foreground` | `!alpha [ *BGDarker, '00' ]` |  |
+| `sideBar.foreground` | `*FG` |  |
 | `sideBar.border` | `!alpha [ *BGDarker, '00' ]` |  |
 | `sideBarTitle.foreground` | `*FG` | Side Bar title foreground color |
 | `sideBarSectionHeader.background` | `*BG` | Side Bar section header background color |
-| `sideBarSectionHeader.foreground` | `!alpha [ *BGDarker, '00' ]` |  |
+| `sideBarSectionHeader.foreground` | `*FG` |  |
 | `sideBarSectionHeader.border` | `!alpha [ *BGDarker, '00' ]` | Side bar section header border color |
 
 ## Editor Group & Tabs
@@ -232,7 +232,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `editorError.border` | `!alpha [ *BGDarker, '00' ]` |  |
 | `editorWarning.foreground` | `*ORANGE` | Border color of warning squigglies in the editor |
 | `editorWarning.border` | `!alpha [ *BGDarker, '00' ]` |  |
-| `editorGutter.background` | `!alpha [ *BGDarker, '00' ]` |  |
+| `editorGutter.background` | `*BG` |  |
 | `editorGutter.modifiedBackground` | `!alpha [ *BLUE, '80' ]` | Editor gutter background color for lines that are modified |
 | `editorGutter.addedBackground` | `!alpha [ *GREEN,  80 ]` | Editor gutter background color for lines that are added |
 | `editorGutter.deletedBackground` | `!alpha [ *RED,    80 ]` | Editor gutter background color for lines that are deleted |
@@ -268,7 +268,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `editorSuggestWidget.selectedBackground` | `*SELECTION` | Background color of the selected entry in the suggestion widget |
 | `editorHoverWidget.background` | `*BG` | Background color of the editor hover |
 | `editorHoverWidget.border` | `!alpha [ *BGDarker, '00' ]` | Border color of the editor hover |
-| `debugExceptionWidget.background` | `!alpha [ *BGDarker, '00' ]` |  |
+| `debugExceptionWidget.background` | `*BGDarker` |  |
 | `debugExceptionWidget.border` | `!alpha [ *BGDarker, '00' ]` |  |
 | `editorMarkerNavigation.background` | `*BGDark` | Editor marker navigation widget background |
 | `editorMarkerNavigationError.background` | `*SELECTION` |  |

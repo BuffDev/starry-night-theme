@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.7] - 2026-10-13
+
+### Correção da regressão 2.0.6
+
+A varredura 2.0.6 aplicou transparência a chaves que não eram bordas — foregrounds de texto e scrollbar. Resultado: textos invisíveis no Explorador e scrollbar sumida.
+
+- **5 foregrounds restaurados** (`*FG`): `sideBar.foreground`, `sideBarSectionHeader.foreground`, `list.hoverForeground`, `list.focusForeground`, `list.inactiveSelectionForeground`. Foreground transparente = texto invisível; transparência só é válida para borda/background decorativo.
+- **scrollbar visível de novo**: `scrollbarSlider.background/hover/active` voltaram para `*BGLighter` com alfa A0/D0/F0 — slider discreto (flat), não apagado. Scrollbar é referência, não decoração.
+- `editorGutter.background` → `*BG` (gutter transparente fazia marcadores de SCM vazarem no bloco errado).
+- `debugExceptionWidget.background` → `*BGDarker`.
+
+Validação: 0 foregrounds com alfa `00` no JSON gerado.
+
 ## [2.0.6] - 2026-10-13
 
 ### Varredura completa / correções
