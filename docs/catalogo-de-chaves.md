@@ -60,7 +60,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `dropdown.background` | `*BGDark` | Dropdown background |
+| `dropdown.background` | `*BG` | Dropdown background |
 | `dropdown.border` | `!alpha [ *BGDarker, '00' ]` | Dropdown border |
 | `dropdown.foreground` | `*FG` | Dropdown foreground |
 
@@ -72,7 +72,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `input.foreground` | `*FG` | Input box foreground |
 | `input.border` | `!alpha [ *BGDarker, '00' ]` | Input box border |
 | `input.placeholderForeground` | `*COMMENT` | Input box foreground color for placeholder text |
-| `inputOption.activeBorder` | `*CYAN` | Border color of activated options in input fields |
+| `inputOption.activeBorder` | `*ACCENT` | Border color of activated options in input fields |
 | `inputValidation.infoForeground` | `!alpha [ *BGDarker, '00' ]` |  |
 | `inputValidation.infoBackground` | `!alpha [ *BGDarker, '00' ]` |  |
 | `inputValidation.infoBorder` | `*ACCENT` | Input validation border color for information severity |
@@ -126,11 +126,11 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `activityBar.background` | `*BGLight` | Activity Bar background color |
+| `activityBar.background` | `*BG` | Activity Bar background color |
 | `activityBar.inactiveForeground` | `*COMMENT` | Activity bar item foreground color when it is inactive |
 | `activityBar.foreground` | `*FG` | Activity bar foreground color (for example used for the icons) |
 | `activityBar.border` | `!alpha [ *BGDarker, '00' ]` | Activity Bar border color with the Side Bar (legacy key; blank herda de modernActivityBar.border) |
-| `activityBar.activeBorder` | `*STAR` | Activity Bar deprecated; blank herda border bg e fica invisível |
+| `activityBar.activeBorder` | `*ACCENT` | Activity Bar deprecated; blank herda border bg e fica invisível |
 | `activityBar.activeBackground` | `!alpha [ *ACCENT, '15' ]` | Activity Bar indicator background color |
 | `activityBarBadge.background` | `*STAR` | Activity notification badge background color |
 | `activityBarBadge.foreground` | `*INK` | Activity notification badge foreground color |
@@ -139,7 +139,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `sideBar.background` | `*BGDark` | Side Bar background color |
+| `sideBar.background` | `*BG` | Side Bar background color |
 | `sideBar.foreground` | `*FG` |  |
 | `sideBar.border` | `!alpha [ *BGDarker, '00' ]` |  |
 | `sideBarTitle.foreground` | `*FG` | Side Bar title foreground color |
@@ -154,17 +154,17 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `editorGroup.border` | `!alpha [ *BGDarker, '00' ]` | Color to separate multiple editor groups from each other |
 | `editorGroup.dropBackground` | `*TAB_DROP_BG` | Background color when dragging editors around |
 | `editorGroupHeader.noTabsBackground` | `!alpha [ *BGDarker, '00' ]` |  |
-| `editorGroupHeader.tabsBackground` | `*BGDark` | Background color of the Tabs container |
+| `editorGroupHeader.tabsBackground` | `*BG` | Background color of the Tabs container |
 | `editorGroupHeader.tabsBorder` | `!alpha [ *BGDarker, '00' ]` | Border color of the editor group title header when tabs are enabled (blank would fall back to the base theme's grey #303031) |
-| `tab.activeBackground` | `*SELECTION` | Active Tab background color |
-| `tab.activeForeground` | `'#FFFFFF'` | FFFFFF'                                               # Active Tab foreground color in an active group |
+| `tab.activeBackground` | `*BGDark` | Active Tab background color |
+| `tab.activeForeground` | `*FG` | Active Tab foreground color in an active group |
 | `tab.border` | `!alpha [ *BGDarker, '00' ]` | Border to separate Tabs from each other |
-| `tab.activeBorderTop` | `*STAR` | A border drawn to the top of the active tab |
+| `tab.activeBorderTop` | `*ACCENT` | A border drawn to the top of the active tab |
 | `tab.activeBorder` | `!alpha [ *BGDarker, '00' ]` |  |
-| `tab.activeModifiedBorder` | `*STAR` | A border drawn to the top of the active tab when it is modified (dirty dot) |
-| `tab.unfocusedActiveModifiedBorder` | `*STAR` | Same, when the editor group is not focused |
+| `tab.activeModifiedBorder` | `*ACCENT` | A border drawn to the top of the active tab when it is modified (dirty dot) |
+| `tab.unfocusedActiveModifiedBorder` | `*ACCENT` | Same, when the editor group is not focused |
 | `tab.unfocusedActiveBorder` | `!alpha [ *BGDarker, '00' ]` |  |
-| `tab.inactiveBackground` | `*BGDark` | Inactive Tab background color |
+| `tab.inactiveBackground` | `*BG` | Inactive Tab background color |
 | `tab.inactiveForeground` | `*COMMENT` | Inactive Tab foreground color in an active group |
 | `tab.unfocusedActiveForeground` | `!alpha [ *BGDarker, '00' ]` |  |
 | `tab.unfocusedInactiveForeground` | `!alpha [ *BGDarker, '00' ]` |  |
@@ -260,8 +260,8 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `editorWidget.background` | `*BGDark` | Background color of editor widgets, such as Find/Replace |
-| `editorSuggestWidget.background` | `*BGDark` | Background color of the suggestion widget |
+| `editorWidget.background` | `*BG` | Background color of editor widgets, such as Find/Replace |
+| `editorSuggestWidget.background` | `*BG` | Background color of the suggestion widget |
 | `editorSuggestWidget.border` | `!alpha [ *BGDarker, '00' ]` |  |
 | `editorSuggestWidget.foreground` | `*FG` | Foreground color of the suggestion widget |
 | `editorSuggestWidget.highlightForeground` | `*SELECTION` |  |
@@ -270,7 +270,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `editorHoverWidget.border` | `!alpha [ *BGDarker, '00' ]` | Border color of the editor hover |
 | `debugExceptionWidget.background` | `*BGDarker` |  |
 | `debugExceptionWidget.border` | `!alpha [ *BGDarker, '00' ]` |  |
-| `editorMarkerNavigation.background` | `*BGDark` | Editor marker navigation widget background |
+| `editorMarkerNavigation.background` | `*BG` | Editor marker navigation widget background |
 | `editorMarkerNavigationError.background` | `*SELECTION` |  |
 | `editorMarkerNavigationWarning.background` | `*SELECTION` |  |
 
@@ -278,7 +278,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `peekView.border` | `*SELECTION` | Color of the peek view borders and arrow |
+| `peekView.border` | `*ACCENT` | Color of the peek view borders and arrow |
 | `peekViewEditor.background` | `*BG` | Background color of the peek view editor |
 | `peekViewEditorGutter.background` | `!alpha [ *BGDarker, '00' ]` |  |
 | `peekViewEditor.matchHighlightBackground` | `!alpha [ *YELLOW, '80' ]` | Match highlight color in the peek view editor |
@@ -318,28 +318,28 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `statusBar.background` | `*SKY` | Standard Status Bar background color |
-| `statusBar.foreground` | `*INK` | Status Bar foreground color |
+| `statusBar.background` | `*BG` | Standard Status Bar background color |
+| `statusBar.foreground` | `*COMMENT` | Status Bar foreground color |
 | `statusBar.debuggingBackground` | `*RED` | Status Bar background color when a program is being debugged |
 | `statusBar.debuggingForeground` | `*INK` | Status Bar foreground color when a program is being debugged |
-| `statusBar.noFolderBackground` | `*SKY` | Status Bar foreground color when no folder is opened |
+| `statusBar.noFolderBackground` | `*BG` | Status Bar foreground color when no folder is opened |
 | `statusBar.noFolderForeground` | `*INK` | Status Bar background color when no folder is opened |
 | `statusBarItem.activeBackground` | `!alpha [ *INK, '35' ]` | Status Bar item background color when clicking |
 | `statusBarItem.hoverBackground` | `!alpha [ *INK, '20' ]` | Status Bar item background color when hovering |
-| `statusBarItem.prominentBackground` | `*STAR` | Status Bar prominent items background color. Prominent items stand out from other Status Bar entries to indicate importance |
-| `statusBarItem.prominentForeground` | `*INK` | Status Bar prominent items foreground color |
-| `statusBarItem.prominentHoverBackground` | `*YELLOW` | Status Bar prominent items background color when hovering. Prominent items stand out from other Status Bar entries to indicate importance |
-| `statusBarItem.remoteForeground` | `*SKY` | Background color for the remote indicator on the status bar |
-| `statusBarItem.remoteBackground` | `*INK` | Foreground color for the remote indicator on the status bar |
+| `statusBarItem.prominentBackground` | `*PRIMARY` | Status Bar prominent items background color. Prominent items stand out from other Status Bar entries to indicate importance |
+| `statusBarItem.prominentForeground` | `'#FFFFFF'` | FFFFFF'                                      # Status Bar prominent items foreground color |
+| `statusBarItem.prominentHoverBackground` | `*PRIMARY_HOVER` | Status Bar prominent items background color when hovering. Prominent items stand out from other Status Bar entries to indicate importance |
+| `statusBarItem.remoteForeground` | `*FG` | Remote indicator text on the status bar (flat: fundo igual ao resto) |
+| `statusBarItem.remoteBackground` | `!alpha [ *ACCENT, '30' ]` | Remote indicator: wash sutil (ODP-flat: transparente; aqui wash leve) |
 | `statusBar.border` | `!alpha [ *BGDarker, '00' ]` | transparent: era blank (herdaria valor opaco do base dark_vs / default) |
 
 ## Title Bar Colors (MacOS Only)
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `titleBar.activeBackground` | `*BGLight` | Title Bar background when the window is active |
+| `titleBar.activeBackground` | `*BG` | Title Bar background when the window is active |
 | `titleBar.activeForeground` | `*FG` | Title Bar foreground when the window is active |
-| `titleBar.inactiveBackground` | `*BGDarker` | Title Bar background when the window is inactive |
+| `titleBar.inactiveBackground` | `*BGDark` | Title Bar background when the window is inactive |
 | `titleBar.inactiveForeground` | `*COMMENT` | Title Bar foreground when the window is inactive |
 
 ## Extensions
@@ -361,13 +361,13 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `debugToolBar.background` | `*BGDark` | Debug toolbar background color |
+| `debugToolBar.background` | `*BG` | Debug toolbar background color |
 
 ## Welcome Page
 
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
-| `walkThrough.embeddedEditorBackground` | `*BGDark` | Background color for the embedded editors on the Interactive Playground |
+| `walkThrough.embeddedEditorBackground` | `*BG` | Background color for the embedded editors on the Interactive Playground |
 
 ## Setting Editor
 
@@ -375,10 +375,10 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 |---|---|---|
 | `settings.headerForeground` | `*FG` | The foreground color for a section header or active title |
 | `settings.modifiedItemIndicator` | `*ORANGE` | The color of the line that indicates a modified setting |
-| `settings.dropdownBackground` | `*BGDark` | Dropdown background |
+| `settings.dropdownBackground` | `*BG` | Dropdown background |
 | `settings.dropdownForeground` | `*FG` | Dropdown foreground |
 | `settings.dropdownBorder` | `!alpha [ *BGDarker, '00' ]` | Dropdown border |
-| `settings.checkboxBackground` | `*BGDark` | Checkbox background |
+| `settings.checkboxBackground` | `*BG` | Checkbox background |
 | `settings.checkboxForeground` | `*FG` | Checkbox foreground |
 | `settings.checkboxBorder` | `!alpha [ *BGDarker, '00' ]` | Checkbox border |
 | `settings.textInputBackground` | `*BGDark` | Text input box background |
@@ -423,7 +423,7 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | Chave | Valor no YAML | O que muda |
 |---|---|---|
 | `inlineChat.foreground` | `*FG` | Foreground color of the inline chat |
-| `inlineChat.background` | `*BGDark` | Background color of the inline chat |
+| `inlineChat.background` | `*BG` | Background color of the inline chat |
 | `inlineChat.border` | `!alpha [ *BGDarker, '00' ]` | Border color of the inline chat |
 | `inlineChat.shadow` | `*BGDarker` | Shadow color of the inline chat |
 | `inlineChatDiff.inserted` | `!alpha [ *GREEN, '20' ]` | Background color of inserted text in the inline chat |

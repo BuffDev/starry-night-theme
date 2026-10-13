@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.8] - 2026-10-13
+
+### 100% Flat no padrão One Dark Pro Binaryify
+
+Referência: `OneDark-Pro-flat.json` (superfície única `#282c34`, demarcação só onde informa). Portado para a paleta Starry Night:
+
+- **Superfície única `*BG` (#131E33)** em activity bar, sidebar, editor, tabs, title bar, status bar, panel, widgets, dropdowns, suggestion widget, inline chat, debug toolbar, settings ( capacidade dropdown/checkbox ).
+- **Tab ativa** destaca por **fundo** (`*BGDark` #15253B) e por **linha discreta** `tab.activeBorderTop: *ACCENT` — sem amarelo berrante (trocou `*STAR` → `*ACCENT`).
+- **Activity bar** indicador também `*ACCENT`.
+- **Status bar** mesmo fundo do resto (`*BG`), foreground `*COMMENT`; itens de debug continuam `*RED`; remote indicator com wash `*ACCENT 30%`; prominent itens usam `*PRIMARY` (release button), texto branco.
+- `peekView.border: *ACCENT`.
+
+tokenColors intocado — o flat muda o CHROME; sintaxe continua a paleta Starry Night original.
+
+Validação: lint 0 unsupported · 0 foreground transparente · 0 hex 7-dígitos · xmllint icls ok.
+VER: docs/catalogo-de-chaves.md regenerado (293 chaves).
+
 ## [2.0.7] - 2026-10-13
 
 ### Correção da regressão 2.0.6
