@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.6] - 2026-10-13
+
+### Varredura completa / correções
+
+- **Bordas flat sem glitches**: 41 chaves que estavam blank (e herdariam cinza opaco do tema base `vs-dark`, ex. `widget.border #303031`, `sideBarSectionHeader.border #ccc3`, `checkbox.border #6B6B6B`) agora declaradas `!alpha [ *BGDarker, '00' ]` — transparente documentado, imune a rebuild.
+- **Alfas normalizados**: todos os `!alpha` com número sem aspas viraram string de 2 chars (`'45'`, `'15'`, …). Único formato que não gera hex de 7 dígitos.
+- **6 chaves deprecadas removidas** (lint reportava `Unsupported key`): `activityBarBadge.border`, `editorGroup.background`, `editorWidgetBorder`, `welcomePage.buttonBackground`, `welcomePage.buttonHoverBackground`, `settings.inactiveSelectedItemBorder`.
+- **3 chaves setadas em vez de blank**: `editorSuggestWidget.highlightForeground`, `editorMarkerNavigationError.background`, `editorMarkerNavigationWarning.background` (herdavam valores de contraste ruins do base).
+- **activityBar.border / statusBar.border / button.border / merge.border / editorSuggestWidget.border / debugExceptionWidget.border / scrollbarSlider.* / editorError.border / editorWarning.border / editorGutter.background**: agora `#111D3200` (transparentes de verdade, antes herdados ou invisíveis por acidente).
+
+### Documentação
+
+- `docs/catalogo-de-chaves.md` (gerado por `scripts/docgen.py`): todas as 293 chaves `colors` com valor + o que muda visualmente.
+- `docs/referencia-da-paleta.md`: âncora YAML → hex → onde é usada, regras da paleta, customização via `workbench.colorCustomizations`.
+- `docs/auditoria-e-manutencao.md`: 10 pegadinhas que quebram o tema silenciosamente (blank herdando base, alfa, hover tracejado, x JetBrains New UI vs clássica, chaves deprecadas, webviews que o tema não controla).
+
+nota: exaustão nunca; tokenColors intocado — flat/borderless é sobre workbench, não sobre sintaxe.
+
 ## [2.0.5] - 2026-10-07
 
 - JetBrains editor scheme: every text attribute is now a **real** platform key.
