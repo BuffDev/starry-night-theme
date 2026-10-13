@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.0.11] - 2026-10-13
+
+### Campo de texto do painel Chat/Agent visível e flat
+
+O input de texto do painel de chat (o "caixa com engrenagem e botão azul") ficava fantasma: as chaves `agentsChatInput.*`/`inlineChatInput.*` não eram setadas e herdavam contorno do base.
+
+- `agentsChatInput.background` / `inlineChatInput.background` → `*BGDark` (#15253B, campo destaca pela cor)
+- bordas → transparentes; focus ring `*ACCENT`; placeholder `*COMMENT`
+- `agentsPanel.background` → `*BG`, bordas `00`
+
 ## [2.0.10] - 2026-10-13
 
 ### Status bar visível de novo (flat não significa invisível)

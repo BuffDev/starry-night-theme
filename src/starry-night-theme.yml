@@ -429,6 +429,17 @@ colors:
   minimap.warningHighlight: !alpha [ *ORANGE, '80' ]                              # Minimap highlight color for warnings
 
 
+  # Chat input (o campo de texto do painel Agent/Copilot)
+  agentsChatInput.background: *BGDark
+  agentsChatInput.border: !alpha [ *BGDarker, '00' ]
+  agentsChatInput.focusBorder: *ACCENT
+  agentsChatInput.placeholderForeground: *COMMENT
+  agentsPanel.background: *BG
+  agentsPanel.border: !alpha [ *BGDarker, '00' ]
+  agentsNewSessionButton.border: !alpha [ *BGDarker, '00' ]
+  inlineChatInput.background: *BGDark
+  inlineChatInput.border: !alpha [ *BGDarker, '00' ]
+  inlineChatInput.placeholderForeground: *COMMENT
   # Chat / Copilot panel (o painel "Agent" do VS Code)
   chat.requestBackground: *BG
   chat.requestBorder: !alpha [ *BGDarker, '00' ]

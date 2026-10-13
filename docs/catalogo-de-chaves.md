@@ -453,6 +453,21 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `minimap.errorHighlight` | `!alpha [ *RED, '80' ]` | Minimap highlight color for errors |
 | `minimap.warningHighlight` | `!alpha [ *ORANGE, '80' ]` | Minimap highlight color for warnings |
 
+## Chat input (o campo de texto do painel Agent/Copilot)
+
+| Chave | Valor no YAML | O que muda |
+|---|---|---|
+| `agentsChatInput.background` | `*BGDark` |  |
+| `agentsChatInput.border` | `!alpha [ *BGDarker, '00' ]` |  |
+| `agentsChatInput.focusBorder` | `*ACCENT` |  |
+| `agentsChatInput.placeholderForeground` | `*COMMENT` |  |
+| `agentsPanel.background` | `*BG` |  |
+| `agentsPanel.border` | `!alpha [ *BGDarker, '00' ]` |  |
+| `agentsNewSessionButton.border` | `!alpha [ *BGDarker, '00' ]` |  |
+| `inlineChatInput.background` | `*BGDark` |  |
+| `inlineChatInput.border` | `!alpha [ *BGDarker, '00' ]` |  |
+| `inlineChatInput.placeholderForeground` | `*COMMENT` |  |
+
 ## Chat / Copilot panel (o painel "Agent" do VS Code)
 
 | Chave | Valor no YAML | O que muda |
