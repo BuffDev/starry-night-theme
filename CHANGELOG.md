@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.13] - 2026-10-13
+
+### Hierarquia de superfícies do mockup ("shadcn x Starry Night")
+
+A 2.0.8 tinha uniformizado TUDO em `*BG` — matou a profundidade do mockup. Restaurada a escala em 3 níveis, sem bordas (separação por cor):
+
+- **Nível 1 — mais escuro** (`*BGLight` #0F1D31): activity bar e title bar (a moldura "externa" do mockup), ícones dourados (`*YELLOW`, inativos a 65% alfa), indicador `*STAR`
+- **Nível 2 — meio** (`*BGDark` #15253B): sidebar, strip de tabs, tab inativa, dropdowns, widgets, quick input (o painel "FILE EXPLORER")
+- **Nível 3 — claro** (`*BG` #131E33): editor E tab ativa (a tab ativa **funde** com o editor, como no mockup)
+- **Status bar**: `*SKY` azul (assinatura), texto `*INK`
+- "FILE EXPLORER" em `*COMMENT` (esmaecido, como no mockup)
+
+Nenhuma cor nova: todas as 24 âncoras da 2.0.5 intocadas — só o mapeamento chaves→âncora.
+
 ## [2.0.12] - 2026-10-13
 
 ### Status bar azul de volta (assinatura do tema)
