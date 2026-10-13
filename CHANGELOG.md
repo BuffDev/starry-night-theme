@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.12] - 2026-10-13
+
+### Status bar azul de volta (assinatura do tema)
+
+Escolha do mantenedor: a barra azul `*SKY` (#3584CE, texto `*INK`) é a assinatura do Starry Night — restaurada em `statusBar.background`, `statusBar.noFolderBackground`, `statusBar.foreground: *INK`. O resto do chrome continua 100% flat.
+
+Paleta intocada desde a 2.0.5: 24 âncoras idênticas (`*BG #131E33`, `*STAR #FACC15`, `*ACCENT #60A5FA`, 16 ANSI + alto/baixo).
+
 ## [2.0.11] - 2026-10-13
 
 ### Campo de texto do painel Chat/Agent visível e flat
