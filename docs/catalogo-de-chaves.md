@@ -350,6 +350,13 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `extensionButton.prominentBackground` | `!alpha [ *GREEN, '90' ]` | Extension view button background color |
 | `extensionButton.prominentHoverBackground` | `!alpha [ *GREEN, '60' ]` | Extension view button background hover color |
 
+## Quick Input (command palette / quick open)
+
+| Chave | Valor no YAML | O que muda |
+|---|---|---|
+| `quickInput.background` | `*BG` | Command palette background (flat) |
+| `quickInput.foreground` | `*FG` |  |
+
 ## Quick Picker
 
 | Chave | Valor no YAML | O que muda |
@@ -429,6 +436,13 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `inlineChatDiff.inserted` | `!alpha [ *GREEN, '20' ]` | Background color of inserted text in the inline chat |
 | `inlineChatDiff.removed` | `!alpha [ *RED, '20' ]` | Background color of removed text in the inline chat |
 
+## Sticky scroll
+
+| Chave | Valor no YAML | O que muda |
+|---|---|---|
+| `editorStickyScroll.background` | `*BG` |  |
+| `editorStickyScroll.border` | `!alpha [ *BGDarker, '00' ]` | sem linha no sticky |
+
 ## Minimap
 
 | Chave | Valor no YAML | O que muda |
@@ -438,6 +452,15 @@ Chaves marcadas `(blank)` não são emitidas: o VS Code herda o valor do base th
 | `minimap.selectionHighlight` | `!alpha [ *SELECTION, '80' ]` | Minimap highlight color for the editor selection |
 | `minimap.errorHighlight` | `!alpha [ *RED, '80' ]` | Minimap highlight color for errors |
 | `minimap.warningHighlight` | `!alpha [ *ORANGE, '80' ]` | Minimap highlight color for warnings |
+
+## Chat / Copilot panel (o painel "Agent" do VS Code)
+
+| Chave | Valor no YAML | O que muda |
+|---|---|---|
+| `chat.requestBackground` | `*BG` |  |
+| `chat.requestBorder` | `!alpha [ *BGDarker, '00' ]` |  |
+| `chat.slashCommandBackground` | `!alpha [ *BGLighter, '60' ]` |  |
+| `chat.avatarBackground` | `*BGDark` |  |
 
 ## Trees
 

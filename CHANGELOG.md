@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.9] - 2026-10-13
+
+### Campos de texto com cor própria, sem borda · painel de Chat sem linha
+
+- **Input, dropdown, settings**: fundo `*BGDark` (#15253B) — o campo se destaca pela cor de fundo, nunca por contorno (`*.border` todos `00`). `inputOption.activeBorder` mantém `*ACCENT` (é o estado "ativo", informação).
+- **Quick Input (paleta de comandos)**: `quickInput.background: *BG` — sem caixa com stroke.
+- **Sticky scroll**: fundo `*BG`, borda transparente — sem "segunda linha de cabeçalho" no editor.
+- **Painel Chat/Agent (VS Code built-in, onde vive o Hermes Agent)**: `chat.requestBackground: *BG`, `chat.requestBorder: 00`, `chat.slashCommandBackground` wash 60% de `*BGLighter` — remove a moldura ao redor de cada mensagem/prompt do painel.
+
+Token colors e validação/erro borders intocados (informação).
+
+Validação: lint 0 unsupported · docs 301 chaves (46 grupos).
+
 ## [2.0.8] - 2026-10-13
 
 ### 100% Flat no padrão One Dark Pro Binaryify
